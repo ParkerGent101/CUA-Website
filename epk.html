@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coming Up Aces — EPK</title>
+<!--
+  Photo setup:
+  - Put images in the /photos folder.
+  - Use these filenames to update the EPK without editing HTML:
+    press-1.jpg, press-2.jpg, press-3.jpg
+-->
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -165,13 +171,16 @@
     text-transform: uppercase;
     opacity: 0.55;
   }
-  /* ── If you replace a slot with an <img> ── */
   .photo-slot img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
     display: block;
+  }
+  .photo-slot img:not([hidden]) ~ .slot-icon,
+  .photo-slot img:not([hidden]) ~ .slot-text {
+    display: none;
   }
 
   /* ── SOCIALS ── */
@@ -298,21 +307,24 @@
   <section class="section">
     <div class="section-label">Press Photos</div>
     <!--
-      TO ADD PHOTOS: Replace a <div class="photo-slot">...</div>
-      with: <div class="photo-slot"><img src="your-photo.jpg" alt="Coming Up Aces"></div>
+      To update photos, replace the files in /photos:
+      press-1.jpg, press-2.jpg, press-3.jpg
     -->
     <div class="photo-grid">
       <div class="photo-slot">
+        <img src="photos/press-1.jpg" alt="Coming Up Aces press photo 1" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">Photo 1</span>
+        <span class="slot-text">photos/press-1.jpg</span>
       </div>
       <div class="photo-slot">
+        <img src="photos/press-2.jpg" alt="Coming Up Aces press photo 2" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">Photo 2</span>
+        <span class="slot-text">photos/press-2.jpg</span>
       </div>
       <div class="photo-slot">
+        <img src="photos/press-3.jpg" alt="Coming Up Aces press photo 3" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">Photo 3</span>
+        <span class="slot-text">photos/press-3.jpg</span>
       </div>
     </div>
   </section>
