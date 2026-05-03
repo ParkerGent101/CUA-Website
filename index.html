@@ -1,1 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coming Up Aces</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+:root {
+  --gold: #C49A2A;
+  --gold-dark: #8B6914;
+  --gold-dim: rgba(196,154,42,0.15);
+  --ink: #0e0c08;
+  --off-white: #f2ede3;
+  --cream: #e8dfc8;
+  --dark-bg: #0e0c08;
+  --dark-mid: #1a1610;
+  --dark-card: #201c14;
+  --muted: #9a9080;
+  --border: rgba(196,154,42,0.2);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark-bg);
+  color: var(--off-white);
+  font-family: 'Lora', Georgia, serif;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 48px;
+  background: rgba(14,12,8,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Special Elite', serif;
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ─── HERO ─── */
+#home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 40px 60px;
+}
+
+/* textured dark background */
+#home::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,105,20,0.18) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.012) 2px,
+      rgba(255,255,255,0.012) 4px
+    );
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  position: relative;
+}
+.hero-name {
+  font-family: 'Special Elite', serif;
+  font-size: clamp(52px, 10vw, 110px);
+  line-height: 0.95;
+  letter-spacing: 6px;
+  color: var(--off-white);
+  margin-bottom: 8px;
+  position: relative;
+}
+.hero-name span {
+  display: block;
+  color: var(--gold);
+}
+.hero-tagline {
+  font-size: 13px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 28px 0 44px;
+  position: relative;
+}
+
+/* photo placeholder hero */
+.hero-photo {
+  width: min(540px, 90vw);
+  height: 320px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--dark-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  margin-bottom: 52px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, var(--dark-bg));
+  pointer-events: none;
+}
+.hero-photo .ph-icon { font-size: 32px; opacity: 0.3; }
+.hero-photo .ph-text {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+/* when you drop a real img inside .hero-photo: */
+.hero-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+.btn-primary {
+  padding: 14px 36px;
+  background: var(--gold);
+  color: var(--dark-bg);
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--gold-dark); color: var(--off-white); }
+.btn-ghost {
+  padding: 14px 36px;
+  background: transparent;
+  color: var(--gold);
+  font-family: 'Lora', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--gold); }
+
+/* ─── SECTION WRAPPER ─── */
+.section-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 40px;
+}
+.section-label {
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── SHOWS ─── */
+#shows { background: var(--dark-mid); }
+
+.shows-header {
+  margin-bottom: 48px;
+}
+.shows-title {
+  font-family: 'Special Elite', serif;
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: var(--off-white);
+  margin-bottom: 8px;
+}
+.shows-sub {
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.show-list { display: flex; flex-direction: column; gap: 2px; }
+
+.show-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 28px;
+  background: var(--dark-card);
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s, background 0.2s;
+}
+.show-item:hover {
+  border-left-color: var(--gold);
+  background: rgba(196,154,42,0.06);
+}
+
+.show-date {
+  text-align: center;
+}
+.show-month {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+}
+.show-day {
+  font-family: 'Special Elite', serif;
+  font-size: 38px;
+  line-height: 1;
+  color: var(--off-white);
+}
+
+.show-info {}
+.show-event {
+  font-family: 'Special Elite', serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: var(--off-white);
+  margin-bottom: 2px;
+}
+.show-venue {
+  font-size: 13px;
+  color: var(--muted);
+}
+.show-venue strong { color: var(--off-white); }
+
+.show-badge {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ─── EPK SECTION ─── */
+#epk { background: var(--dark-bg); }
+
+.epk-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-bottom: 64px;
+}
+.epk-bio-text {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--off-white);
+  border-left: 2px solid var(--gold-dark);
+  padding-left: 24px;
+}
+
+.band-cards { display: flex; flex-direction: column; gap: 10px; }
+.member-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+.member-initial {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Special Elite', serif;
+  font-size: 14px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.member-info-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--off-white);
+}
+.member-info-role {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* photo grid */
+.epk-photos {
+  margin-bottom: 48px;
+}
+.photo-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.photo-slot {
+  height: 220px;
+  background: var(--dark-card);
+  border: 1px dashed rgba(196,154,42,0.2);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  overflow: hidden;
+}
+.photo-slot .ph2-icon { font-size: 24px; opacity: 0.25; }
+.photo-slot .ph2-text {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.35;
+}
+.photo-slot img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* socials + download */
+.epk-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.social-links { display: flex; flex-wrap: wrap; gap: 12px; }
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+.social-link:hover { color: var(--gold); border-color: var(--gold); }
+.social-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 48px 40px;
+  border-top: 1px solid var(--border);
+  background: var(--dark-bg);
+}
+.footer-logo {
+  font-family: 'Special Elite', serif;
+  font-size: 28px;
+  letter-spacing: 5px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.footer-text {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .nav-links { gap: 20px; }
+  .section-wrap { padding: 70px 24px; }
+  .epk-intro { grid-template-columns: 1fr; gap: 40px; }
+  .photo-grid-3 { grid-template-columns: 1fr; }
+  .show-item { grid-template-columns: 70px 1fr; }
+  .show-badge { display: none; }
+  .epk-bottom { flex-direction: column; align-items: flex-start; }
+  .hero-photo { height: 220px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">♠ CUA</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#shows">Shows</a></li>
+    <li><a href="#epk">EPK</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-eyebrow">Northwest Arkansas</div>
+  <div class="hero-name">
+    Coming Up<span>Aces</span>
+  </div>
+  <div class="hero-tagline">Classic Rock &nbsp;·&nbsp; Southern Grit &nbsp;·&nbsp; Grunge Energy</div>
+
+  <!-- Replace contents with <img src="your-photo.jpg" alt="Coming Up Aces"> -->
+  <div class="hero-photo">
+    <span class="ph-icon">📷</span>
+    <span class="ph-text">Add your band photo here</span>
+  </div>
+
+  <div class="hero-cta-row">
+    <a href="#shows" class="btn-primary">Upcoming Shows</a>
+    <a href="#epk" class="btn-ghost">Press Kit</a>
+  </div>
+</section>
+
+<!-- SHOWS -->
+<section id="shows">
+  <div class="section-wrap">
+    <div class="section-label">Live</div>
+    <div class="shows-header">
+      <div class="shows-title">Upcoming Shows</div>
+      <div class="shows-sub">Playing Local Fest — 5th Annual Skate Park Tour</div>
+    </div>
+
+    <div class="show-list">
+
+      <div class="show-item">
+        <div class="show-date">
+          <span class="show-month">Aug</span>
+          <span class="show-day">22</span>
+        </div>
+        <div class="show-info">
+          <div class="show-event">Local Fest — Skate Park Tour</div>
+          <div class="show-venue"><strong>Van Buren</strong>, Arkansas</div>
+        </div>
+        <div class="show-badge">2025</div>
+      </div>
+
+      <div class="show-item">
+        <div class="show-date">
+          <span class="show-month">Sep</span>
+          <span class="show-day">19</span>
+        </div>
+        <div class="show-info">
+          <div class="show-event">Local Fest — Skate Park Tour</div>
+          <div class="show-venue"><strong>Tahlequah</strong>, Oklahoma</div>
+        </div>
+        <div class="show-badge">2025</div>
+      </div>
+
+      <div class="show-item">
+        <div class="show-date">
+          <span class="show-month">Oct</span>
+          <span class="show-day">24</span>
+        </div>
+        <div class="show-info">
+          <div class="show-event">Local Fest — Skate Park Tour</div>
+          <div class="show-venue"><strong>Rogers</strong>, Arkansas</div>
+        </div>
+        <div class="show-badge">2025</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EPK -->
+<section id="epk">
+  <div class="section-wrap">
+    <div class="section-label">Press Kit</div>
+
+    <div class="epk-intro">
+      <!-- Bio -->
+      <div>
+        <p class="epk-bio-text">Hailing from the hills of Northwest Arkansas, Coming Up Aces is a four-piece classic rock band forged from friendship and a shared love of the classics. Drawing deep from the well of Southern rock legends like Lynyrd Skynyrd and the heartland storytelling of Tom Petty, then running it through the raw, unfiltered energy of grunge, Coming Up Aces has carved out a sound that feels both timeless and alive.</p>
+      </div>
+      <!-- Band -->
+      <div class="band-cards">
+        <div class="member-card">
+          <div class="member-initial">N</div>
+          <div>
+            <div class="member-info-name">Nate Poplin</div>
+            <div class="member-info-role">Lead vocals &amp; rhythm guitar</div>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-initial">P</div>
+          <div>
+            <div class="member-info-name">Parker Gent</div>
+            <div class="member-info-role">Lead guitar, keys, harmonica &amp; backup vocals</div>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-initial">B</div>
+          <div>
+            <div class="member-info-name">Brandon Hargis</div>
+            <div class="member-info-role">Bass guitar</div>
+          </div>
+        </div>
+        <div class="member-card">
+          <div class="member-initial">R</div>
+          <div>
+            <div class="member-info-name">Riley Gent</div>
+            <div class="member-info-role">Drums</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Press Photos -->
+    <div class="epk-photos">
+      <div class="section-label" style="margin-bottom:16px;">Press Photos</div>
+      <!--
+        TO ADD PHOTOS: replace a photo-slot div with:
+        <div class="photo-slot"><img src="photo.jpg" alt="Coming Up Aces"></div>
+      -->
+      <div class="photo-grid-3">
+        <div class="photo-slot">
+          <span class="ph2-icon">📷</span>
+          <span class="ph2-text">Photo 1</span>
+        </div>
+        <div class="photo-slot">
+          <span class="ph2-icon">📷</span>
+          <span class="ph2-text">Photo 2</span>
+        </div>
+        <div class="photo-slot">
+          <span class="ph2-icon">📷</span>
+          <span class="ph2-text">Photo 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Socials + Contact -->
+    <div class="epk-bottom">
+      <div class="social-links">
+        <a class="social-link" href="https://www.instagram.com/comingupaces_/" target="_blank">
+          <span class="social-dot" style="background:#C13584;"></span> Instagram
+        </a>
+        <a class="social-link" href="https://www.facebook.com/profile.php?id=61589341584705" target="_blank">
+          <span class="social-dot" style="background:#1877F2;"></span> Facebook
+        </a>
+        <a class="social-link" href="https://www.tiktok.com/@coming_up_aces" target="_blank">
+          <span class="social-dot" style="background:#f0f0f0;"></span> TikTok
+        </a>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Booking</div>
+        <div style="font-size:14px;color:var(--off-white);">Contact via social media</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">♠ Coming Up Aces</div>
+  <div class="footer-text">Northwest Arkansas &nbsp;·&nbsp; Classic Rock</div>
+</footer>
+
+</body>
+</html>
