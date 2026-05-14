@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 env:
-  REGION: us-central1
-  SERVICE: coming-up-aces
+  REGION: europe-west1
+  SERVICE: cua-website
 
 jobs:
   deploy:
