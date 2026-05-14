@@ -30,5 +30,13 @@
     "city": "Rogers, AR",
     "tickets": "",
     "notes": "Skate contest, cash prizes, giveaways, food & drink"
+  },
+  {
+    "date": "2026-05-14",
+    "event": "CUA Live",
+    "venue": "test",
+    "city": "Fayetteville, AR",
+    "tickets": "",
+    "notes": ""
   }
 ]
