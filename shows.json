@@ -9,7 +9,7 @@
   },
   {
     "date": "2026-08-22",
-    "event": "Local Fest — 5th Annual Skate Park Tour",
+    "event": "Local Fest â€” 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Van Buren, AR",
     "tickets": "",
@@ -17,7 +17,7 @@
   },
   {
     "date": "2026-09-19",
-    "event": "Local Fest — 5th Annual Skate Park Tour",
+    "event": "Local Fest â€” 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Tahlequah, OK",
     "tickets": "",
@@ -25,7 +25,7 @@
   },
   {
     "date": "2026-10-24",
-    "event": "Local Fest — 5th Annual Skate Park Tour",
+    "event": "Local Fest â€” 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Rogers, AR",
     "tickets": "",
@@ -38,5 +38,13 @@
     "city": "Fayetteville, AR",
     "tickets": "",
     "notes": ""
+  },
+  {
+    "date": "2026-07-04",
+    "event": "Test Show",
+    "venue": "Test Venue",
+    "city": "Fayetteville, AR",
+    "tickets": "",
+    "notes": "Test show"
   }
 ]
