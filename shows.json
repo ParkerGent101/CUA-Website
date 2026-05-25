@@ -46,13 +46,5 @@
     "city": "Fayetteville, AR",
     "tickets": "",
     "notes": ""
-  },
-  {
-    "date": "2026-11-15",
-    "event": "Verification Show",
-    "venue": "Test Lounge",
-    "city": "Test City, AR",
-    "tickets": "",
-    "notes": "auto-cleanup target"
   }
 ]
