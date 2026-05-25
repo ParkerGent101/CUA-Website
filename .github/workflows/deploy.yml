@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: deploy-cua-website
+  cancel-in-progress: false
+
 env:
   REGION: europe-west1
   SERVICE: cua-website
