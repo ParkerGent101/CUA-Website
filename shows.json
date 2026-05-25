@@ -1,50 +1,50 @@
-[
-  {
-    "date": "2026-06-25",
-    "event": "Georges Showcase",
-    "venue": "Georges Majestic Music Lounge",
-    "city": "Fayetteville, AR",
-    "tickets": "",
-    "notes": ""
-  },
-  {
-    "date": "2026-08-22",
-    "event": "Local Fest â€” 5th Annual Skate Park Tour",
-    "venue": "Local Crew Skate Supply",
-    "city": "Van Buren, AR",
-    "tickets": "",
-    "notes": "Skate contest, cash prizes, giveaways, food & drink"
-  },
-  {
-    "date": "2026-09-19",
-    "event": "Local Fest â€” 5th Annual Skate Park Tour",
-    "venue": "Local Crew Skate Supply",
-    "city": "Tahlequah, OK",
-    "tickets": "",
-    "notes": "Skate contest, cash prizes, giveaways, food & drink"
-  },
-  {
-    "date": "2026-10-24",
-    "event": "Local Fest â€” 5th Annual Skate Park Tour",
-    "venue": "Local Crew Skate Supply",
-    "city": "Rogers, AR",
-    "tickets": "",
-    "notes": "Skate contest, cash prizes, giveaways, food & drink"
-  },
-  {
-    "date": "2026-05-14",
-    "event": "CUA Live",
-    "venue": "test",
-    "city": "Fayetteville, AR",
-    "tickets": "",
-    "notes": ""
-  },
-  {
-    "date": "2026-05-26",
-    "event": "CUA Live",
-    "venue": "test",
-    "city": "Fayetteville, AR",
-    "tickets": "",
-    "notes": ""
-  }
+﻿[
+    {
+        "date":  "2026-06-25",
+        "event":  "Georges Showcase",
+        "venue":  "Georges Majestic Music Lounge",
+        "city":  "Fayetteville, AR",
+        "tickets":  "",
+        "notes":  ""
+    },
+    {
+        "date":  "2026-08-22",
+        "event":  "Local Fest â€” 5th Annual Skate Park Tour",
+        "venue":  "Local Crew Skate Supply",
+        "city":  "Van Buren, AR",
+        "tickets":  "",
+        "notes":  "Skate contest, cash prizes, giveaways, food \u0026 drink"
+    },
+    {
+        "date":  "2026-09-19",
+        "event":  "Local Fest â€” 5th Annual Skate Park Tour",
+        "venue":  "Local Crew Skate Supply",
+        "city":  "Tahlequah, OK",
+        "tickets":  "",
+        "notes":  "Skate contest, cash prizes, giveaways, food \u0026 drink"
+    },
+    {
+        "date":  "2026-10-24",
+        "event":  "Local Fest â€” 5th Annual Skate Park Tour",
+        "venue":  "Local Crew Skate Supply",
+        "city":  "Rogers, AR",
+        "tickets":  "",
+        "notes":  "Skate contest, cash prizes, giveaways, food \u0026 drink"
+    },
+    {
+        "date":  "2026-05-14",
+        "event":  "CUA Live",
+        "venue":  "test",
+        "city":  "Fayetteville, AR",
+        "tickets":  "",
+        "notes":  ""
+    },
+    {
+        "date":  "2026-05-26",
+        "event":  "CUA Live",
+        "venue":  "Test",
+        "city":  "Fayetteville, AR",
+        "tickets":  "",
+        "notes":  ""
+    }
 ]
