@@ -1,3 +1,23 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Local environment and editor noise
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+
+# Optional tool/build caches
+node_modules/
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.vite/
+
+# Temporary files
+*.tmp
+*.bak
