@@ -4,14 +4,14 @@ document.getElementById('year').textContent = new Date().getFullYear();
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // Load and render shows
-fetch('shows.json')
+fetch(`shows.json?v=${Date.now()}`, { cache: 'no-store' })
   .then(r => r.json())
   .then(shows => {
     const today = new Date();
     today.setHours(0,0,0,0);
 
     const upcoming = shows
-      .filter(s => new Date(s.date) >= today)
+      .filter(s => new Date(s.date + 'T12:00:00') >= today)
       .sort((a, b) => new Date(a.date) - new Date(b.date));
 
     const list = document.getElementById('shows-list');
@@ -48,7 +48,7 @@ fetch('shows.json')
   });
 
 // Load and render videos
-fetch('videos.json')
+fetch(`videos.json?v=${Date.now()}`, { cache: 'no-store' })
   .then(r => r.json())
   .then(videos => {
     const grid = document.getElementById('video-grid');
