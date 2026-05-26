@@ -406,16 +406,36 @@ nav {
   display: block;
 }
 
-/* socials + download */
+/* booking + follow */
 .epk-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 32px;
   padding-top: 40px;
   border-top: 1px solid var(--border);
 }
+.epk-bottom-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.epk-bottom-label {
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.epk-bottom-email {
+  font-family: 'Special Elite', serif;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: var(--off-white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.epk-bottom-email:hover { color: var(--gold); }
 .social-links { display: flex; flex-wrap: wrap; gap: 12px; }
 .social-link {
   display: inline-flex;
@@ -545,7 +565,7 @@ footer {
     <div class="section-label">Live</div>
     <div class="shows-header">
       <div class="shows-title">Upcoming Shows</div>
-      <div class="shows-sub">Playing Local Fest — 5th Annual Skate Park Tour</div>
+      <div class="shows-sub">Across Arkansas & Oklahoma — Summer & Fall 2026</div>
     </div>
 
     <div class="show-list" id="show-list"></div>
@@ -604,25 +624,42 @@ footer {
     </div>
 
     <!-- Press Photos -->
-<div class="epk-photos">
-  <div class="section-label" style="margin-bottom:16px;">Press Photos</div>
+    <div class="epk-photos">
+      <div class="section-label" style="margin-bottom:16px;">Press Photos</div>
 
-  <!--
-    To update photos, add files to /photos named:
-    press-1.JPG through press-8.JPG
-  -->
+      <!--
+        To update photos, add files to /photos named:
+        press-1.JPG through press-8.JPG
+      -->
 
-  <div class="photo-grid-3">
-    <div class="photo-slot"><img src="photos/press-1.JPG" alt="Coming Up Aces press photo 1" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-1.JPG</span></div>
-    <div class="photo-slot"><img src="photos/press-2.JPG" alt="Coming Up Aces press photo 2" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-2.JPG</span></div>
-    <div class="photo-slot"><img src="photos/press-3.JPG" alt="Coming Up Aces press photo 3" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-3.JPG</span></div>
-    <div class="photo-slot"><img src="photos/press-4.JPG" alt="Coming Up Aces press photo 4" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-4.JPG</span></div>
-    <div class="photo-slot"><img src="photos/press-7.JPG" alt="Coming Up Aces press photo 7" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-7.JPG</span></div>
-  </div>
-</div>
+      <div class="photo-grid-3">
+        <div class="photo-slot"><img src="photos/press-1.JPG" alt="Coming Up Aces press photo 1" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-1.JPG</span></div>
+        <div class="photo-slot"><img src="photos/press-2.JPG" alt="Coming Up Aces press photo 2" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-2.JPG</span></div>
+        <div class="photo-slot"><img src="photos/press-3.JPG" alt="Coming Up Aces press photo 3" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-3.JPG</span></div>
+        <div class="photo-slot"><img src="photos/press-4.JPG" alt="Coming Up Aces press photo 4" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-4.JPG</span></div>
+        <div class="photo-slot"><img src="photos/press-7.JPG" alt="Coming Up Aces press photo 7" onerror="this.hidden=true"><span class="ph2-icon">📷</span><span class="ph2-text">photos/press-7.JPG</span></div>
+      </div>
+    </div>
 
-        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Booking</div>
-        <div style="font-size:14px;color:var(--off-white);">Please contact comingupaces1@gmail.com</div>
+    <!-- Booking + Follow -->
+    <div class="epk-bottom">
+      <div class="epk-bottom-block">
+        <div class="epk-bottom-label">Booking</div>
+        <a class="epk-bottom-email" href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a>
+      </div>
+      <div class="epk-bottom-block">
+        <div class="epk-bottom-label">Follow</div>
+        <div class="social-links">
+          <a class="social-link" href="https://www.instagram.com/comingupaces_/" target="_blank" rel="noopener">
+            <span class="social-dot" style="background:#C13584;"></span> Instagram
+          </a>
+          <a class="social-link" href="https://www.facebook.com/profile.php?id=61589341584705" target="_blank" rel="noopener">
+            <span class="social-dot" style="background:#1877F2;"></span> Facebook
+          </a>
+          <a class="social-link" href="https://www.tiktok.com/@coming_up_aces" target="_blank" rel="noopener">
+            <span class="social-dot" style="background:#f0f0f0;"></span> TikTok
+          </a>
+        </div>
       </div>
     </div>
 
