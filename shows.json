@@ -4,31 +4,31 @@
     "event": "Georges Showcase",
     "venue": "Georges Majestic Music Lounge",
     "city": "Fayetteville, AR",
-    "tickets": "",
+    "tickets": "https://stubs.net/tickets/8049/coming-up-aces",
     "notes": ""
   },
   {
     "date": "2026-08-22",
-    "event": "Local Fest",
+    "event": "Local Fest — 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Van Buren, AR",
     "tickets": "",
-    "notes": "5th Annual Skate Park Tour — contest, prizes, food & drink"
+    "notes": "Skate contest, cash prizes, giveaways, food & drink"
   },
   {
     "date": "2026-09-19",
-    "event": "Local Fest",
+    "event": "Local Fest — 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Tahlequah, OK",
     "tickets": "",
-    "notes": "5th Annual Skate Park Tour — contest, prizes, food & drink"
+    "notes": "Skate contest, cash prizes, giveaways, food & drink"
   },
   {
     "date": "2026-10-24",
-    "event": "Local Fest",
+    "event": "Local Fest — 5th Annual Skate Park Tour",
     "venue": "Local Crew Skate Supply",
     "city": "Rogers, AR",
     "tickets": "",
-    "notes": "5th Annual Skate Park Tour — contest, prizes, food & drink"
+    "notes": "Skate contest, cash prizes, giveaways, food & drink"
   }
 ]
