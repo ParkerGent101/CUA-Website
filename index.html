@@ -509,7 +509,9 @@ footer {
   .epk-intro { grid-template-columns: 1fr; gap: 40px; }
   .photo-grid-3 { grid-template-columns: 1fr; }
   .show-item { grid-template-columns: 70px 1fr; }
-  .show-badge { display: none; }
+  /* hide the year-only badge on mobile, but keep the Tickets link visible */
+  div.show-badge { display: none; }
+  a.show-badge { grid-column: 1 / -1; justify-self: start; margin-top: 8px; }
   .epk-bottom { flex-direction: column; align-items: flex-start; }
   .hero-photo { height: 220px; }
 }
