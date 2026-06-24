@@ -140,7 +140,7 @@ section h2::after {
 .show-date .month { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
 .show-info .venue { font-size: 1rem; color: var(--white); }
 .show-info .city { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
-.show-info .show-time { font-size: 0.8rem; color: var(--muted); }
+.show-info .show-time { font-size: 0.8rem; color: var(--gold); margin-top: 0.2rem; }
 .show-info .notes { font-size: 0.8rem; color: var(--gold); margin-top: 0.25rem; font-style: italic; }
 .show-ticket a {
   display: inline-block;

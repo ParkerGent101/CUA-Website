@@ -3,6 +3,18 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+// Format a "HH:MM" 24-hour time into "H:MM AM/PM". Passes through anything else.
+function fmtTime(t) {
+  if (!t) return '';
+  const m = /^(\d{1,2}):(\d{2})$/.exec(t);
+  if (!m) return t;
+  let h = +m[1];
+  const min = m[2];
+  const ap = h < 12 ? 'AM' : 'PM';
+  h = h % 12 || 12;
+  return h + ':' + min + ' ' + ap;
+}
+
 // Load and render shows
 fetch(`shows.json?v=${Date.now()}`, { cache: 'no-store' })
   .then(r => r.json())
@@ -24,6 +36,8 @@ fetch(`shows.json?v=${Date.now()}`, { cache: 'no-store' })
 
     upcoming.forEach(show => {
       const d = new Date(show.date + 'T12:00:00');
+      const doors = fmtTime(show.doors), showtime = fmtTime(show.time);
+      const when = [doors && 'Doors ' + doors, showtime && 'Show ' + showtime].filter(Boolean).join(' &middot; ');
       const card = document.createElement('div');
       card.className = 'show-card';
       card.innerHTML = `
@@ -33,7 +47,8 @@ fetch(`shows.json?v=${Date.now()}`, { cache: 'no-store' })
         </div>
         <div class="show-info">
           <div class="venue">${show.venue}</div>
-          <div class="city">${show.city}${show.time ? ' &mdash; ' + show.time : ''}</div>
+          <div class="city">${show.city}</div>
+          ${when ? `<div class="show-time">${when}</div>` : ''}
           ${show.notes ? `<div class="notes">${show.notes}</div>` : ''}
         </div>
         <div class="show-ticket">
