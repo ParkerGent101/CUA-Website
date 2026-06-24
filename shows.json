@@ -4,8 +4,10 @@
     "event": "Georges Showcase",
     "venue": "Georges Majestic Music Lounge",
     "city": "Fayetteville, AR",
-    "tickets": "https://stubs.net/tickets/8049/coming-up-aces",
-    "notes": ""
+    "tickets": "",
+    "notes": "",
+    "doors": "19:00",
+    "time": "20:00"
   },
   {
     "date": "2026-08-22",
