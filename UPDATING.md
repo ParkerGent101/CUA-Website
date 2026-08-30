@@ -1,5 +1,29 @@
 # How to Update the Site
 
+## The easy way
+
+Run the update script and answer the prompts — it edits the JSON, checks it, commits, pushes, and
+watches the deploy:
+
+```bash
+powershell -ExecutionPolicy Bypass -File scripts\cua-update.ps1 -AddShow
+```
+
+`-RemoveShow`, `-AddVideo`, and `-Status` do the other jobs. Run it with no flags to see what's
+currently listed and publish anything you've edited by hand.
+
+Prefer typing it all on one line (this is also how an agent does it — no prompts):
+
+```bash
+python scripts/cua.py add-show --date 2026-11-01 --event "Fall Show" --venue "Georges Majestic" --city "Fayetteville, AR" --doors 20:00 --time 21:00
+python scripts/cua.py list
+python scripts/cua.py push -m "add November show"
+```
+
+Nothing is published until you push, and the script always tells you the exact command to do it.
+
+The rest of this page is the by-hand version.
+
 ## Add or edit a show
 
 Open `shows.json` and add an entry:
@@ -7,14 +31,20 @@ Open `shows.json` and add an entry:
 ```json
 {
   "date": "2026-07-04",
+  "event": "Independence Day Show",
   "venue": "The Venue Name",
   "city": "City, ST",
-  "time": "9:00 PM",
+  "doors": "20:00",
+  "time": "21:00",
   "tickets": "https://link-to-tickets.com",
   "notes": "Optional note like 'Free entry' or 'With Special Guests'"
 }
 ```
 
+- `date` must be `YYYY-MM-DD` — the auto-hide logic depends on it
+- **`doors` and `time` are 24-hour `HH:MM`.** The site converts them to "Doors 8:00 PM · Show 9:00 PM".
+  Writing `"9:00 PM"` here does *not* work. Leave either out to hide it.
+- `event` shows up in the EPK and in commit messages; the show card itself renders venue + city
 - `tickets` can be an empty string `""` — no button will show
 - `notes` can be an empty string `""` — nothing will show
 - Past shows auto-hide; only future dates appear
@@ -49,3 +79,7 @@ git push
 ```
 
 The site updates automatically within ~1 minute.
+
+> **Don't edit these JSON files with a PowerShell script.** PowerShell 5.1's `ConvertTo-Json`
+> reindents the file, escapes `&`, and turns the em-dashes in the Local Fest entries into garbage.
+> Use `scripts/cua.py`, or edit by hand in a text editor.

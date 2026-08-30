@@ -19,12 +19,15 @@ Coming Up Aces is a static band website for comingupaces.net. It is intentionall
 - `shows.json`: upcoming show data.
 - `videos.json`: video embeds.
 - `photos/`: press and hero images.
+- `scripts/cua.py`: the tool that edits `shows.json`/`videos.json` and pushes.
 - `UPDATING.md`: human-facing update instructions.
 
 ## Editing Rules
 
 - Keep the stack static unless the user explicitly asks for a build system.
 - Preserve simple JSON data files. Show dates should stay in `YYYY-MM-DD` format so past shows auto-hide correctly.
+- Edit `shows.json`/`videos.json` with `python scripts/cua.py` (or by hand), never with a PowerShell
+  script — PS 5.1's `ConvertTo-Json` reindents the file, escapes `&`, and corrupts the em-dashes in it.
 - Optimize new photos before committing; avoid large original camera exports when web-sized images will do.
 - Do not commit local logs, generated build folders, dependency folders, or machine-specific editor settings.
 - When changing page structure, check both desktop and mobile layouts.
