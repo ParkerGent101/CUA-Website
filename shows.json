@@ -16,5 +16,15 @@
     "city": "Rogers, AR",
     "tickets": "",
     "notes": "Skate contest, cash prizes, giveaways, food & drink"
+  },
+  {
+    "date": "2099-01-01",
+    "event": "TEST — delete me",
+    "venue": "Verification Venue",
+    "city": "Fayetteville, AR",
+    "doors": "19:30",
+    "time": "20:30",
+    "tickets": "",
+    "notes": "Automated check of scripts/cua.py; removed immediately."
   }
 ]
