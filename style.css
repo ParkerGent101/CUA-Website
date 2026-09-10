@@ -167,8 +167,20 @@ section + section::before {
 }
 .btn-solid { background: var(--gold); color: var(--ink); }
 .btn-solid:hover { background: var(--gold-lit); color: var(--ink); }
-.btn-quiet { border-color: var(--line-soft); color: var(--bone); }
-.btn-quiet:hover { border-color: var(--gold); background: transparent; color: var(--gold); }
+/* The secondary button sits on the hero photo, where a plain outline washes
+   out over a bright frame. A translucent dark fill keeps it readable on any
+   slide while still reading as secondary next to the solid gold one. */
+.btn-quiet {
+  border-color: rgba(242, 237, 227, 0.4);
+  color: var(--bone);
+  background: rgba(10, 8, 6, 0.42);
+  backdrop-filter: blur(6px);
+}
+.btn-quiet:hover {
+  border-color: var(--gold);
+  background: rgba(10, 8, 6, 0.72);
+  color: var(--gold);
+}
 
 /* Scroll reveal, as progressive enhancement.
    .reveal is VISIBLE by default and only starts hidden once app.js has put
@@ -352,21 +364,14 @@ section + section::before {
 }
 .hero-name span { display: block; color: var(--gold); }
 
-.hero-tagline {
-  margin: 24px auto 0;
-  font-family: var(--accent);
-  font-size: clamp(10px, 1.6vw, 13px);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--bone);
-}
-
 .hero-cta {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
   justify-content: center;
-  margin-top: 40px;
+  /* Sits directly under the display name now that the tagline is gone, so it
+     needs more air than the 40px it had when a line of type separated them. */
+  margin-top: 54px;
 }
 
 .hero-foot {
