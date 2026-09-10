@@ -51,13 +51,14 @@ Nothing is pushed unless you pass `--push` (or run `push`). `scripts\cua-update.
 wrapper over the same tool for interactive use.
 
 **Do not hand-edit shows.json with PowerShell.** `ConvertTo-Json` in PS 5.1 reindents the file to
-4 spaces, escapes `&` as a unicode escape, and corrupts the em-dashes in the Local Fest entries into
+4 spaces, escapes `&` as a unicode escape, and corrupts any em-dash in an event name into
 mojibake. `cua.py` writes `json.dumps(indent=2, ensure_ascii=False)`, which is byte-identical to what's committed.
 
 ## Show data format
 `doors` and `time` are 24-hour `HH:MM` and optional; `app.js` formats them to 12-hour and omits the
-line when both are absent. `event` is stored for commit messages and the EPK — the show card itself
-renders venue/city.
+line when both are absent. **`event` is the card's headline** — the rebuild renders it above
+venue/city, so it is public-facing copy, not just a label for commit messages. `tickets` renders a
+button and is omitted entirely when empty.
 ```json
 {
   "date": "2026-06-25",
@@ -92,7 +93,9 @@ renders venue/city.
 | `python scripts\cua.py list` | Every show and video with its index |
 | `python scripts\cua.py add-show \| edit-show \| remove-show` | Show CRUD, non-interactive |
 | `python scripts\cua.py add-video \| remove-video` | Video CRUD, validates the embed URL |
-| `python scripts\cua.py push -m "..."` | Commit + push shows/videos (deploys the site) |
+| `python scripts\cua.py sync-photos` | Pull the curated Drive folder into the hero slideshow (`--from-local DIR` to bootstrap offline) |
+| `python scripts\cua.py optimize-stills` | Re-encode the fixed-name `photos/` JPGs to the WebP the pages load |
+| `python scripts\cua.py push -m "..."` | Commit + push shows/videos/gallery (deploys the site) |
 | `python scripts\cua.py status` | Live site ping + recent GitHub Actions deploys |
 | `scripts\cua-update.ps1` | Prompt-driven wrapper over `cua.py` (`-AddShow`, `-RemoveShow`, `-AddVideo`, `-Status`) |
 | `scripts\clean.ps1` | Preview/remove generated artifacts |

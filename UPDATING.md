@@ -81,7 +81,7 @@ git push
 The site updates automatically within ~1 minute.
 
 > **Don't edit these JSON files with a PowerShell script.** PowerShell 5.1's `ConvertTo-Json`
-> reindents the file, escapes `&`, and turns the em-dashes in the Local Fest entries into garbage.
+> reindents the file, escapes `&`, and turns any em-dash in an event name into garbage.
 > Use `scripts/cua.py`, or edit by hand in a text editor.
 
 ## Change the photos in the hero slideshow

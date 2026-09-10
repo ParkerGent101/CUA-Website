@@ -5,8 +5,8 @@ Edits shows.json / videos.json and (optionally) commits + pushes, which triggers
 the GitHub Actions deploy to Cloud Run. This is the workhorse behind
 scripts/cua-update.ps1; it exists as Python rather than PowerShell because
 PowerShell 5.1's ConvertTo-Json cannot round-trip these files — it reindents to
-4 spaces, escapes '&' to \\u0026, and mangles the em-dashes in the Local Fest
-entries to mojibake. json.dumps(indent=2, ensure_ascii=False) is byte-identical
+4 spaces, escapes '&' to \\u0026, and mangles any em-dash in an
+event name to mojibake. json.dumps(indent=2, ensure_ascii=False) is byte-identical
 to what's committed.
 
 Every command is fully non-interactive so an agent can drive it the same way a
@@ -35,8 +35,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-# The Windows console defaults to cp1252, which can't print the em-dashes in the
-# Local Fest entries. Only affects display — files are always written as UTF-8.
+# The Windows console defaults to cp1252, which can't print em-dashes in event
+# names. Only affects display — files are always written as UTF-8.
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
@@ -49,8 +49,8 @@ VIDEOS_FILE = ROOT / "videos.json"
 LIVE_URL = "https://comingupaces.net"
 GH_REPO = "ParkerGent101/CUA-Website"
 
-# Fields app.js actually reads off a show (see app.js — 'event' is stored for
-# commit messages and the EPK, the card itself renders venue/city/doors/time).
+# Fields app.js actually reads off a show. 'event' is the card's headline as of the
+# 2026-09 rebuild — public-facing copy, not just a commit-message label.
 SHOW_FIELDS = ["date", "event", "venue", "city", "doors", "time", "tickets", "notes"]
 
 
