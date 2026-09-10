@@ -30,6 +30,8 @@ import json
 import re
 import subprocess
 import sys
+import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -261,7 +263,8 @@ def cmd_remove_video(args):
 
 
 def cmd_push(args):
-    do_push(args.message or "Update site content")
+    # "whatever is already edited" — shows, videos, and a synced gallery.
+    do_push(args.message or "Update site content", CONTENT_PATHS + GALLERY_PATHS)
 
 
 def cmd_status(args):
@@ -281,6 +284,432 @@ def cmd_status(args):
         print(f"  could not reach it: {e}")
 
 
+# ── photos ────────────────────────────────────────────────────────────────────
+#
+# sync-photos pulls the curated Drive folder — the one Parker drops
+# website-worthy shots into — optimizes each image, and writes gallery.json for
+# the hero slideshow. The Drive folder is the entire publish gate: a photo is on
+# the site because it's in that folder, and gone because it isn't.
+#
+# Everything here is deliberately deploy-time, not runtime: nginx serves plain
+# WebP files out of the container, so the live site never talks to Drive and a
+# Drive outage can't blank the hero.
+
+GALLERY_FILE = ROOT / "gallery.json"
+GALLERY_DIR = ROOT / "photos" / "gallery"
+GALLERY_PATHS = ["gallery.json", "photos/gallery", "index.html"]
+
+# Widths for the hero srcset. Sources are only ever scaled down, never up.
+SLIDE_WIDTHS = [1280, 1920, 2560]
+WEBP_QUALITY = 82
+LQIP_WIDTH = 24
+
+DRIVE_API = "https://www.googleapis.com/drive/v3/files"
+# Pillow can't open HEIC without pillow-heif, and iPhones shoot HEIC by default.
+HEIC_EXT = {".heic", ".heif"}
+IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".bmp"} | HEIC_EXT
+
+
+def read_dotenv() -> dict:
+    """Tiny .env reader — the Drive key lives there and .env is gitignored."""
+    env = {}
+    f = ROOT / ".env"
+    if not f.exists():
+        return env
+    for line in f.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        env[k.strip()] = v.strip().strip("'\"")
+    return env
+
+
+def drive_folder_id(raw: str) -> str:
+    """Accept a folder ID or any of the URL shapes Drive hands out when sharing."""
+    m = re.search(r"/folders/([A-Za-z0-9_-]+)", raw) or re.search(r"[?&]id=([A-Za-z0-9_-]+)", raw)
+    return m.group(1) if m else raw.strip()
+
+
+def drive_get(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"Accept-Encoding": "identity"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        return r.read()
+
+
+def drive_list(folder: str, key: str) -> list[dict]:
+    """Every non-trashed file in one folder, ordered by name."""
+    files, token = [], None
+    while True:
+        q = urllib.parse.urlencode({
+            "q": f"'{folder}' in parents and trashed = false",
+            "key": key,
+            "fields": "nextPageToken,files(id,name,mimeType,md5Checksum,size)",
+            "pageSize": "1000",
+            "orderBy": "name_natural",
+            **({"pageToken": token} if token else {}),
+        })
+        try:
+            page = json.loads(drive_get(f"{DRIVE_API}?{q}"))
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:400]
+            die(
+                f"Drive returned HTTP {e.code} listing folder {folder!r}.\n"
+                f"  {body}\n"
+                "  Check: the folder is shared 'Anyone with the link — Viewer', the API key\n"
+                "  has the Drive API enabled, and any key restrictions allow this machine."
+            )
+        except urllib.error.URLError as e:
+            die(f"could not reach the Drive API: {e.reason}")
+        files.extend(page.get("files", []))
+        token = page.get("nextPageToken")
+        if not token:
+            break
+    return files
+
+
+def gather_sources(args) -> list[dict]:
+    """Normalize either source into {key, name, bytes} records, ordered by name.
+
+    Ordering is by filename so the slideshow sequence is controlled by renaming
+    in Drive — prefix with 01-, 02- to pin an order.
+    """
+    if args.from_local:
+        d = Path(args.from_local).expanduser().resolve()
+        if not d.is_dir():
+            die(f"--from-local {d} is not a directory")
+        found = [p for p in d.iterdir()
+                 if p.is_file() and p.suffix.lower() in IMAGE_EXT
+                 and p.stem.lower() != "og"]          # og.jpg is a generated artifact
+        # optimize-stills leaves hero.webp next to hero.JPG, and both would come
+        # through as separate slides of the same photograph. One per stem, and
+        # prefer the original over a derivative to avoid re-encoding twice.
+        rank = {".webp": 1}
+        best: dict[str, Path] = {}
+        for p in found:
+            k = p.stem.lower()
+            if k not in best or rank.get(p.suffix.lower(), 0) < rank.get(best[k].suffix.lower(), 0):
+                best[k] = p
+        picks = sorted(best.values(), key=lambda p: p.name.lower())
+        if not picks:
+            die(f"no images in {d} (looked for {', '.join(sorted(IMAGE_EXT))})")
+        if len(found) != len(picks):
+            print(f"    ({len(found) - len(picks)} derivative(s) skipped — one slide per photo)")
+        print(f"==> {len(picks)} image(s) from {d}")
+        return [{"key": f"local:{p.name}", "name": p.name, "bytes": p.read_bytes()} for p in picks]
+
+    env = read_dotenv()
+    folder = args.folder or env.get("CUA_DRIVE_FOLDER", "")
+    key = args.api_key or env.get("CUA_DRIVE_API_KEY", "")
+    if not folder or not key:
+        die(
+            "need a Drive folder and an API key.\n"
+            "  Put them in .env (gitignored) as:\n"
+            "    CUA_DRIVE_FOLDER=<folder id or share link>\n"
+            "    CUA_DRIVE_API_KEY=<key with the Drive API enabled>\n"
+            "  or pass --folder/--api-key, or bootstrap offline with --from-local DIR."
+        )
+    folder = drive_folder_id(folder)
+    listing = drive_list(folder, key)
+    picks = [f for f in listing
+             if f.get("mimeType", "").startswith("image/")
+             or Path(f.get("name", "")).suffix.lower() in IMAGE_EXT]
+    if not picks:
+        die(f"no images in Drive folder {folder} ({len(listing)} file(s) there, none of them images)")
+    picks.sort(key=lambda f: f.get("name", "").lower())
+    print(f"==> {len(picks)} image(s) in the Drive folder")
+    out = []
+    for f in picks:
+        print(f"    downloading {f['name']}")
+        out.append({
+            "key": f["id"],
+            "name": f["name"],
+            "bytes": drive_get(f"{DRIVE_API}/{f['id']}?alt=media&key={key}"),
+        })
+    return out
+
+
+# Filename words that describe the file rather than the picture. "press-1.JPG"
+# yielding alt="press 1" is worse than an honest generic, so these drop out.
+GENERIC_WORDS = {
+    "hero", "press", "band", "cua", "aces", "photo", "photos", "img", "image",
+    "dsc", "dscn", "pic", "final", "edit", "edited", "copy", "web", "website",
+    "slide", "shot", "export", "raw", "jpg", "jpeg", "png", "orig", "original",
+}
+
+
+def default_alt(name: str) -> str:
+    """Derive alt from the filename, but only when the filename says something.
+
+    Hand-written alt in gallery.json always wins and survives re-syncs.
+    """
+    words = [w for w in re.split(r"[\s._-]+", Path(name).stem) if w]
+    words = [w for w in words
+             if not w.isdigit() and len(w) >= 3 and w.lower() not in GENERIC_WORDS]
+    return f"Coming Up Aces — {' '.join(words)}" if words else "Coming Up Aces live"
+
+
+def build_slide(src: dict, existing: dict, dry_run: bool) -> dict | None:
+    """One source image -> WebP derivatives + a manifest entry. None if unusable."""
+    import base64
+    import hashlib
+    import io
+    from PIL import Image, ImageFilter, ImageOps, ImageStat, UnidentifiedImageError
+
+    ext = Path(src["name"]).suffix.lower()
+    try:
+        im = Image.open(io.BytesIO(src["bytes"]))
+        im.load()
+    except UnidentifiedImageError:
+        if ext in HEIC_EXT:
+            print(f"    !! skipped {src['name']}: HEIC needs `pip install pillow-heif`, or "
+                  "re-save it as JPEG in Drive")
+        else:
+            print(f"    !! skipped {src['name']}: not an image Pillow can read")
+        return None
+    except Exception as e:
+        print(f"    !! skipped {src['name']}: {e}")
+        return None
+
+    # exif_transpose first or phone photos land sideways; the re-save then drops
+    # all EXIF, which also strips camera GPS tags off the band's public photos.
+    im = ImageOps.exif_transpose(im).convert("RGB")
+    w, h = im.size
+    digest = hashlib.sha256(src["bytes"]).hexdigest()[:10]
+    base = f"photos/gallery/slide-{digest}"
+
+    widths = [x for x in SLIDE_WIDTHS if x <= w] or [w]
+    if not dry_run:
+        GALLERY_DIR.mkdir(parents=True, exist_ok=True)
+        for tw in widths:
+            out = GALLERY_DIR / f"slide-{digest}-{tw}.webp"
+            if out.exists():
+                continue                                        # content-hashed: same bytes, same file
+            resized = im if tw == w else im.resize(
+                (tw, max(1, round(h * tw / w))), Image.LANCZOS)
+            resized.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+
+    # Inline blur-up placeholder so a slide never flashes black while it decodes.
+    thumb = im.resize((LQIP_WIDTH, max(1, round(h * LQIP_WIDTH / w))), Image.LANCZOS)
+    thumb = thumb.filter(ImageFilter.GaussianBlur(1))
+    buf = io.BytesIO()
+    thumb.save(buf, "WEBP", quality=50, method=6)
+    lqip = "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+
+    prev = existing.get(src["key"], {})
+    return {
+        "id": src["key"],
+        "name": src["name"],
+        "src": base,
+        "widths": widths,
+        "width": w,
+        "height": h,
+        # Mean luminance 0–255. Bar and stage shots come in very dark, and a
+        # hero photo that reads as black defeats the slideshow — this is what
+        # the sync's dark-photo warning checks.
+        "lum": round(ImageStat.Stat(im.convert("L")).mean[0], 1),
+        # Hand-edited alt text survives every re-sync — otherwise a sync silently
+        # undoes the accessibility work.
+        "alt": prev.get("alt") or default_alt(src["name"]),
+        "lqip": lqip,
+    }
+
+
+HERO_MARKERS = [
+    # (start marker, end marker, builder) — rewritten in place in index.html so
+    # the first slide is in the HTML and preloaded, not waiting on gallery.json.
+    ("<!-- CUA:HERO-PRELOAD:START -->", "<!-- CUA:HERO-PRELOAD:END -->", "preload"),
+    ("<!-- CUA:HERO-FIRST:START -->", "<!-- CUA:HERO-FIRST:END -->", "first"),
+]
+
+
+def srcset_for(slide: dict) -> str:
+    return ", ".join(f"{slide['src']}-{w}.webp {w}w" for w in slide["widths"])
+
+
+def bake_hero(slides: list[dict], dry_run: bool) -> None:
+    """Put the first slide straight into index.html.
+
+    The hero photo is the page's largest contentful paint. If it only appears
+    after gallery.json round-trips, the redesign measurably feels slower than
+    what it replaced — so slide one ships in the HTML and JS only takes over the
+    rotation.
+    """
+    page = ROOT / "index.html"
+    if not page.exists() or not slides:
+        return
+    html = page.read_text(encoding="utf-8")
+    first = slides[0]
+    widest = max(first["widths"])
+    blocks = {
+        "preload": (
+            f'<link rel="preload" as="image" href="{first["src"]}-{widest}.webp" '
+            f'imagesrcset="{srcset_for(first)}" imagesizes="100vw" fetchpriority="high">'
+        ),
+        # The blurred placeholder goes inline as a background so there's no flash
+        # of black while a ~300KB full-bleed WebP decodes. It's a data URI, so it
+        # costs no request and is painted with the HTML.
+        "first": (
+            f'<img class="slide is-active" src="{first["src"]}-{widest}.webp" '
+            f'srcset="{srcset_for(first)}" sizes="100vw" '
+            f'alt="{first["alt"]}" fetchpriority="high" decoding="async"'
+            + (f' style="background-image:url({first["lqip"]});'
+               'background-size:cover;background-position:center 32%"'
+               if first.get("lqip") else "")
+            + ">"
+        ),
+    }
+    out, missing = html, []
+    for start, end, kind in HERO_MARKERS:
+        if start not in out or end not in out:
+            missing.append(start)
+            continue
+        head, rest = out.split(start, 1)
+        _, tail = rest.split(end, 1)
+        out = f"{head}{start}\n    {blocks[kind]}\n    {end}{tail}"
+    if missing:
+        print(f"    !! index.html is missing {', '.join(missing)} — hero not baked in")
+    if out != html and not dry_run:
+        page.write_text(out, encoding="utf-8", newline="\n")
+        print("    baked the first slide into index.html")
+
+
+OG_SIZE = (1200, 630)
+
+
+def write_og(src_bytes: bytes, dry_run: bool) -> None:
+    """Regenerate photos/og.jpg — the image link previews use.
+
+    Deliberately a stable filename and a JPEG: the meta tag in index.html can't
+    chase content-hashed names, and some link scrapers still won't take WebP.
+    """
+    import io
+    from PIL import Image, ImageOps
+
+    if dry_run:
+        return
+    im = ImageOps.exif_transpose(Image.open(io.BytesIO(src_bytes))).convert("RGB")
+    # Cover-crop to 1200x630 rather than squash it.
+    im = ImageOps.fit(im, OG_SIZE, Image.LANCZOS, centering=(0.5, 0.32))
+    out = ROOT / "photos" / "og.jpg"
+    im.save(out, "JPEG", quality=84, optimize=True, progressive=True)
+    print(f"    wrote {out.relative_to(ROOT).as_posix()} ({out.stat().st_size // 1024} KB)")
+
+
+def cmd_optimize_stills(args):
+    """Convert the fixed-name photos (hero, press-N, …) to WebP.
+
+    Separate from sync-photos because these are referenced by name in
+    index.html and epk.html, so they can't have content-hashed filenames. Run it
+    after replacing any of the JPGs in photos/.
+    """
+    from PIL import Image, ImageOps
+
+    srcs = sorted(
+        p for p in (ROOT / "photos").iterdir()
+        if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg", ".png"}
+        and p.stem != "og"
+    )
+    if not srcs:
+        die("no JPG/PNG files directly in photos/ to optimize")
+
+    before = after = 0
+    for p in srcs:
+        im = ImageOps.exif_transpose(Image.open(p)).convert("RGB")
+        w, h = im.size
+        if w > 1800:
+            im = im.resize((1800, round(h * 1800 / w)), Image.LANCZOS)
+        out = p.with_suffix(".webp")
+        before += p.stat().st_size
+        if args.dry_run:
+            print(f"  would write {out.name} from {p.name} ({w}x{h})")
+            continue
+        im.save(out, "WEBP", quality=WEBP_QUALITY, method=6)
+        after += out.stat().st_size
+        print(f"  {p.name} -> {out.name}  "
+              f"{p.stat().st_size // 1024} KB -> {out.stat().st_size // 1024} KB")
+    if not args.dry_run:
+        print(f"\n{len(srcs)} file(s): {before / 1_048_576:.1f} MB -> {after / 1_048_576:.1f} MB")
+        print("  the .JPG originals are kept as sources; the pages reference the .webp")
+    finish(args, f"optimize {len(srcs)} still photo(s)", paths=["photos"])
+
+
+def cmd_sync_photos(args):
+    sources = gather_sources(args)
+    existing = {s["id"]: s for s in load(GALLERY_FILE) if isinstance(s, dict) and "id" in s}
+
+    slides = []
+    for src in sources:
+        slide = build_slide(src, existing, args.dry_run)
+        if slide:
+            slides.append(slide)
+    if not slides:
+        die("no usable images — nothing written")
+    for i, s in enumerate(slides):
+        s["order"] = i
+
+    # save()'s dry-run dumps the whole file, and every slide carries a base64
+    # placeholder — unreadable. Summarize instead.
+    if args.dry_run:
+        print(f"--- gallery.json (dry run, not written) — {len(slides)} slide(s) ---")
+        for s in slides:
+            print(f"  [{s['order']}] {s['name']} -> {Path(s['src']).name} {s['widths']}")
+    else:
+        save(GALLERY_FILE, slides)
+
+    # Prune derivatives whose source left the folder. This is what makes pulling
+    # a photo out of Drive actually remove it from the site.
+    keep = {f"{Path(s['src']).name}-{w}.webp" for s in slides for w in s["widths"]}
+    stale = [p for p in GALLERY_DIR.glob("slide-*.webp")] if GALLERY_DIR.exists() else []
+    stale = [p for p in stale if p.name not in keep]
+    for p in stale:
+        print(f"    pruning {p.name}")
+        if not args.dry_run:
+            p.unlink()
+
+    bake_hero(slides, args.dry_run)
+
+    # og.jpg tracks slide one, so the link preview matches what the site opens on.
+    lead = next((s for s in sources if s["key"] == slides[0]["id"]), None)
+    if lead:
+        write_og(lead["bytes"], args.dry_run)
+
+    total = sum(
+        (GALLERY_DIR / f"{Path(s['src']).name}-{w}.webp").stat().st_size
+        for s in slides for w in s["widths"]
+        if (GALLERY_DIR / f"{Path(s['src']).name}-{w}.webp").exists()
+    )
+    print(f"\n{len(slides)} slide(s), {len(stale)} pruned, {total / 1_048_576:.1f} MB on disk")
+
+    # A full-bleed hero is a wide letterbox. Portrait sources get cropped to a
+    # narrow vertical slice of themselves, and anything under 1920px wide goes
+    # soft when stretched across a desktop viewport. Worth saying out loud —
+    # it's the main thing that decides whether the slideshow looks good.
+    portrait = [s for s in slides if s["height"] > s["width"]]
+    lowres = [s for s in slides if s["width"] < 1920]
+    dark = [s for s in slides if s.get("lum", 255) < 50]
+    if portrait or lowres or dark:
+        print("\n  Heads up, for a full-bleed hero:")
+        if portrait:
+            print(f"    {len(portrait)} of {len(slides)} are portrait and will crop hard on desktop: "
+                  + ", ".join(s["name"] for s in portrait[:4])
+                  + (" …" if len(portrait) > 4 else ""))
+            print("      Landscape shots fill a cinematic hero far better.")
+        if lowres:
+            print(f"    {len(lowres)} are under 1920px wide, so they'll soften when scaled up: "
+                  + ", ".join(f"{s['name']} ({s['width']}px)" for s in lowres[:4])
+                  + (" …" if len(lowres) > 4 else ""))
+            print("      Originals rather than messenger/social re-exports fix this.")
+        if dark:
+            print(f"    {len(dark)} are very dark and will read as near-black behind the "
+                  "band name: "
+                  + ", ".join(f"{s['name']} (lum {s['lum']:.0f})" for s in dark[:4])
+                  + (" …" if len(dark) > 4 else ""))
+            print("      Nothing is altered — swap them for brighter frames if you'd rather.")
+
+    finish(args, f"sync photos: {len(slides)} slide(s)", paths=GALLERY_PATHS)
+
+
 # ── git ───────────────────────────────────────────────────────────────────────
 
 def git(*a, check=True):
@@ -288,18 +717,23 @@ def git(*a, check=True):
                           capture_output=True, text=True)
 
 
-def do_push(message: str):
+CONTENT_PATHS = ["shows.json", "videos.json"]
+
+
+def do_push(message: str, paths: list[str] | None = None):
+    paths = paths or CONTENT_PATHS
     # Content-aware, not 'git status': this repo has core.autocrlf=true while the
     # JSON files are LF on disk, so status reports them modified when nothing changed.
-    unchanged = git("diff", "--quiet", "--", "shows.json", "videos.json",
-                    check=False).returncode == 0
-    if unchanged:
+    unchanged = git("diff", "--quiet", "--", *paths, check=False).returncode == 0
+    # A photo sync's new WebP files are untracked, which 'diff' never reports.
+    untracked = git("ls-files", "--others", "--exclude-standard", "--", *paths).stdout.strip()
+    if unchanged and not untracked:
         print("nothing to commit.")
         return
-    git("add", "shows.json", "videos.json")
+    git("add", "--", *paths)
     staged = git("diff", "--cached", "--name-only").stdout.strip()
     if not staged:
-        print("no shows.json/videos.json changes staged — nothing to push.")
+        print(f"no changes staged under {', '.join(paths)} — nothing to push.")
         return
     git("commit", "-m", message)
     git("push", "origin", "main")
@@ -308,13 +742,13 @@ def do_push(message: str):
     print(f"  check with: python scripts/cua.py status")
 
 
-def finish(args, message: str):
+def finish(args, message: str, paths: list[str] | None = None):
     """Push if asked, otherwise tell the user exactly how to."""
     if args.dry_run:
         print("(dry run — nothing written, nothing pushed)")
         return
     if args.push:
-        do_push(args.message or message)
+        do_push(args.message or message, paths)
     else:
         print(f'  not pushed. to publish: python scripts/cua.py push -m "{message}"')
 
@@ -374,6 +808,20 @@ def main():
 
     sp = with_picker(with_common(sub.add_parser("remove-video", help="delete one video")), "video")
     sp.set_defaults(func=cmd_remove_video)
+
+    sp = with_common(sub.add_parser(
+        "optimize-stills", help="convert the fixed-name photos/ JPGs to WebP"))
+    sp.set_defaults(func=cmd_optimize_stills)
+
+    sp = with_common(sub.add_parser(
+        "sync-photos", help="pull the curated Drive folder into the hero slideshow"))
+    sp.add_argument("--folder", default="",
+                    help="Drive folder ID or share link (default: CUA_DRIVE_FOLDER in .env)")
+    sp.add_argument("--api-key", default="",
+                    help="Drive API key (default: CUA_DRIVE_API_KEY in .env)")
+    sp.add_argument("--from-local", default="",
+                    help="bootstrap from a local directory instead of Drive")
+    sp.set_defaults(func=cmd_sync_photos)
 
     sp = sub.add_parser("push", help="commit + push whatever is already edited")
     sp.add_argument("-m", "--message", default="")

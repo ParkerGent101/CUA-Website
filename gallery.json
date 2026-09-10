@@ -1,0 +1,87 @@
+[
+  {
+    "id": "local:hero.JPG",
+    "name": "hero.JPG",
+    "src": "photos/gallery/slide-b9a4e30b3f",
+    "widths": [
+      1280,
+      1920
+    ],
+    "width": 2208,
+    "height": 1562,
+    "lum": 63.5,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABQBACdASoYABEAPtFWo0uoJKMhsAgBABoJaAC06BoMd2hhK3RZ98X1QW4AAP71zu2u9ZFEY/d53+GKNrvetKRk/x0Rzqajr7ov2oVWxWABbho1yOpdDU9pQNQXvZRDQ6yt+r6gbiFDIXL3IhvICi+lCMpF4E22wI96WWbFnUG8R3EEmQAAAA==",
+    "order": 0
+  },
+  {
+    "id": "local:press-1.JPG",
+    "name": "press-1.JPG",
+    "src": "photos/gallery/slide-ebdd0eb89f",
+    "widths": [
+      1280
+    ],
+    "width": 1628,
+    "height": 2208,
+    "lum": 41.2,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAACwBgCdASoYACEAPs1YoEunpaMhtVQIAPAZiWoAgqMucayQiNgu25MJe0/zql0PGziqAd4mdNMjV1dM0qjcAAD+9pPWbKQaKmxyDCSE7U1j/+1Y3y/hQPxY8rGuK/zDvSIz3Bcyxlr1jj+3fdlJvvoGt/+93ncrX8PI/80PWNJJQ215lKu19Fl8BuVdRHDoEg6Fo6UbQwb2Tcj5qqyrRApo67ZvUfr11xP+yLIfQAA=",
+    "order": 1
+  },
+  {
+    "id": "local:press-2.JPG",
+    "name": "press-2.JPG",
+    "src": "photos/gallery/slide-e21454c554",
+    "widths": [
+      1280
+    ],
+    "width": 1656,
+    "height": 2208,
+    "lum": 73.2,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAAAQBgCdASoYACAAPslWn0unpSKhsAwA8BkJbACdMoR5n7Nw7m5gELGyuU2lptl+5McZ1KGQczx2h4AA/qnLzIaDD1gnllaloV/zMZvNZy28P6tB3Fno1hUGT8NxdMrpGWbtSyXpRY52FzBCaN869A6iD/oarxCen+P3NZ9BxrcZIDKivbT2uMBM5VaT2elDBaQKSMB25OiVvI8iA5d0n8jNSd9Nm6zyd8HFl8OwIhKBeIhn720NTbMMQfgeAAAA",
+    "order": 2
+  },
+  {
+    "id": "local:press-3.JPG",
+    "name": "press-3.JPG",
+    "src": "photos/gallery/slide-a0e08729b5",
+    "widths": [
+      1280
+    ],
+    "width": 1658,
+    "height": 2208,
+    "lum": 72.5,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAADwBgCdASoYACAAPs1OokunpCMht/VYAPAZiWwAnTlBUt3BfVeIEKg60mQmVgij3/Ja6FT2IY7VnANmhfcW1lDQAP7y9Dh6+NzW3hsrOTVUoOxkh+Zo1E9Vk3gWZiQMoWEDf0ZV3OJQh2GViBBFq/wjS4zRhAyjf28NZ3bQEPWbwDabxYO9spxmYP8wMv7i/Qn0gj/hjEx8wJyxdo0Ko0rPuW0rTIHhl20rWfVzSxKeuuvvQoEmcy/UwAA=",
+    "order": 3
+  },
+  {
+    "id": "local:press-4.JPG",
+    "name": "press-4.JPG",
+    "src": "photos/gallery/slide-2cddd90372",
+    "widths": [
+      909
+    ],
+    "width": 909,
+    "height": 1852,
+    "lum": 47.1,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAAAwCACdASoYADEAPslQoUunpKMht/VYAPAZCWQArDMkugAkzOJMeV5wcdXIr5quu/AMeV0UnpkQEqiwPLJcNe8YMY+yBofRm87WmAD+8N7TmOsJrmO8U2eTHIhdvl9VLTHVZpta/cT+Yvv0QUBXhfQK+Gf318CRd12ZyqqcshWRUopYynDLJRN9/xsjIu6k4hY4/6O3Mf+3evvzxmS8bvinJDKmt3Vg8iZTEm0T8L6HZfGFz58oDA6JayDjmez01aQ197tej68bKvd0vS1bt8s0VJ62bpLNq1niUuJ0riAfd8Bl/LwAAA==",
+    "order": 4
+  },
+  {
+    "id": "local:press-7.JPG",
+    "name": "press-7.JPG",
+    "src": "photos/gallery/slide-246e356bbc",
+    "widths": [
+      1280
+    ],
+    "width": 1656,
+    "height": 2208,
+    "lum": 65.0,
+    "alt": "Coming Up Aces live",
+    "lqip": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAACQBQCdASoYACAAPtFep06oJSOiKAqpABoJaQABHvAshBN0vMAQem5xkJo3ZqwN+2K/rTsWAAD++KOXLyJ03E5XFPtcqhMOOJxcdYsGm6q3vkiWLw+gOoSh+JoPXDCDKnmTl0QDKpZjiQFwAm/HDi1cG4OxSH18PxvRHRreI0PfmZzDmqWC2f5zYghiSr7+lS3Nmqs7QZoAAA==",
+    "order": 5
+  }
+]

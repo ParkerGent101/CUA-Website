@@ -1,10 +1,29 @@
-# Photo filenames
+# photos/
 
-Replace these files to update the website and EPK without editing HTML:
+Two different things live here.
 
-- `hero.JPG` - main homepage hero photo
-- `press-1.JPG` - first press photo
-- `press-2.JPG` - second press photo
-- `press-3.JPG` - third press photo
+## Fixed-name stills
 
-Keep the filenames and capitalization exactly the same. Cloud Run is case-sensitive, so `hero.jpg` and `hero.JPG` are different files online.
+Referenced by name from `index.html` and `epk.html`:
+
+- `hero.JPG` — kept as a source; the site's hero is the slideshow now (see below)
+- `press-1.JPG` … `press-7.JPG` — press photos; `press-1/2/3` appear in the EPK,
+  and `press-2.webp` is the photo in the site's About section
+
+Replace a file keeping its **exact name and capitalisation** — Cloud Run is case-sensitive, so
+`hero.jpg` and `hero.JPG` are different files online — then run:
+
+```bash
+python scripts/cua.py optimize-stills
+```
+
+That writes the `.webp` copies the pages actually load. The `.JPG` files stay as the sources you
+re-optimise from; nothing on the site links them directly.
+
+## Generated — do not hand-edit
+
+- `gallery/` — content-hashed WebP slides for the hero slideshow
+- `og.jpg` — the 1200x630 image used for link previews when the site is shared
+
+Both are written by `python scripts/cua.py sync-photos`, which pulls the curated Google Drive
+folder. See "Change the photos in the hero slideshow" in `UPDATING.md`.

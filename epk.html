@@ -3,13 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coming Up Aces — EPK</title>
+<title>Coming Up Aces — Press Kit</title>
+<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, press photos and booking contact.">
+
 <!--
   Photo setup:
-  - Put images in the /photos folder.
-  - Use these filenames to update the EPK without editing HTML:
-    press-1.JPG, press-2.JPG, press-3.JPG
+  - Put images in the /photos folder as press-1, press-2, press-3.
+  - Then run: python scripts/cua.py optimize-stills
+    That writes the .webp files this page actually references. Keep the
+    filenames and their capitalisation — Cloud Run is case-sensitive.
+
+  This page is deliberately a LIGHT, print-oriented theme while the site is
+  dark: it exists to be printed or emailed to a venue. Its darker gold
+  (#8B6914 — style.css calls the same colour --gold-deep) is the correct
+  accent on cream; the site's brighter #C49A2A would wash out here. Same
+  palette, different half of it. It keeps its own styles for that reason.
 -->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0806'/%3E%3Ctext x='16' y='25' font-size='26' text-anchor='middle' fill='%23C49A2A'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Coming Up Aces">
+<meta property="og:title" content="Coming Up Aces — Press Kit">
+<meta property="og:description" content="Bio, line-up, press photos and booking contact.">
+<meta property="og:url" content="https://comingupaces.net/epk">
+<meta property="og:image" content="https://comingupaces.net/photos/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://comingupaces.net/photos/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -312,19 +335,19 @@
     -->
     <div class="photo-grid">
       <div class="photo-slot">
-        <img src="photos/press-1.JPG" alt="Coming Up Aces press photo 1" onerror="this.hidden=true">
+        <img src="photos/press-1.webp" alt="Coming Up Aces press photo 1" loading="lazy" decoding="async" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-1.JPG</span>
+        <span class="slot-text">photos/press-1.webp</span>
       </div>
       <div class="photo-slot">
-        <img src="photos/press-2.JPG" alt="Coming Up Aces press photo 2" onerror="this.hidden=true">
+        <img src="photos/press-2.webp" alt="Coming Up Aces press photo 2" loading="lazy" decoding="async" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-2.JPG</span>
+        <span class="slot-text">photos/press-2.webp</span>
       </div>
       <div class="photo-slot">
-        <img src="photos/press-3.JPG" alt="Coming Up Aces press photo 3" onerror="this.hidden=true">
+        <img src="photos/press-3.webp" alt="Coming Up Aces press photo 3" loading="lazy" decoding="async" onerror="this.hidden=true">
         <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-3.JPG</span>
+        <span class="slot-text">photos/press-3.webp</span>
       </div>
     </div>
   </section>

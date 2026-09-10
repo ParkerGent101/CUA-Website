@@ -1,220 +1,785 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Coming Up Aces — site styles
+
+   This file is live. It used to be dead: index.html carried every rule inline
+   and never linked here, while CLAUDE.md called this a key file. Both pages
+   now link it, so edits here actually show up.
+
+   epk.html shares the tokens below and adds its own print-oriented layout.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --black: #0a0a0a;
-  --dark: #111;
-  --card: #1a1a1a;
-  --gold: #c9a84c;
-  --gold-light: #e8c97a;
-  --white: #f0ede6;
-  --muted: #888;
-  --font: 'Georgia', serif;
-  --mono: 'Courier New', monospace;
+  /* Ink — warm blacks, not neutral grey. Keeps photos from looking cold. */
+  --ink:        #0a0806;
+  --ink-2:      #12100b;
+  --ink-3:      #1c1810;
+  --ink-card:   #16130d;
+
+  /* Gold. index.html used #C49A2A and epk.html used #8B6914 for the same
+     token name; the bright one is the brand colour, the dark one is a shade. */
+  --gold:       #C49A2A;
+  --gold-lit:   #E8C97A;
+  --gold-deep:  #8B6914;
+
+  --bone:       #F2EDE3;
+  --ash:        #9A9080;
+  --ash-dim:    #6b6459;
+  --line:       rgba(196, 154, 42, 0.18);
+  --line-soft:  rgba(242, 237, 227, 0.08);
+
+  --display: 'Oswald', 'Arial Narrow', sans-serif;
+  --body:    'Lora', Georgia, serif;
+  --accent:  'Special Elite', 'Courier New', monospace;
+
+  --measure:   68ch;
+  --shell:     1180px;
+  --pad:       clamp(20px, 5vw, 48px);
+  --section-y: clamp(76px, 11vh, 132px);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  /* Anchor links land below the fixed nav instead of under it. */
+  scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
-  background: var(--black);
-  color: var(--white);
-  font-family: var(--font);
-  line-height: 1.6;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
+img { max-width: 100%; display: block; }
 a { color: var(--gold); text-decoration: none; }
-a:hover { color: var(--gold-light); text-decoration: underline; }
+a:hover { color: var(--gold-lit); }
 
-/* NAV */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: rgba(10,10,10,0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid #222;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
 }
-nav .logo {
-  font-size: 1.1rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: bold;
-}
-nav ul { list-style: none; display: flex; gap: 2rem; }
-nav ul a { color: var(--white); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; }
-nav ul a:hover { color: var(--gold); text-decoration: none; }
 
-/* HERO */
-#hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem;
-  background:
-    radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%),
-    var(--black);
-  position: relative;
-}
-#hero .suit {
-  font-size: 5rem;
-  color: var(--gold);
-  opacity: 0.15;
+/* Skip link — keyboard users shouldn't have to tab the whole nav. */
+.skip {
   position: absolute;
-  user-select: none;
-}
-#hero .suit.tl { top: 2rem; left: 2rem; }
-#hero .suit.tr { top: 2rem; right: 2rem; }
-#hero .suit.bl { bottom: 2rem; left: 2rem; }
-#hero .suit.br { bottom: 2rem; right: 2rem; }
-#hero h1 {
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  left: -9999px;
+  z-index: 200;
+  padding: 12px 20px;
+  background: var(--ink-3);
   color: var(--gold);
-  text-shadow: 0 0 40px rgba(201,168,76,0.3);
-  line-height: 1.1;
+  font-family: var(--accent);
+  font-size: 12px;
+  letter-spacing: 2px;
 }
-#hero .tagline {
-  margin-top: 1rem;
-  font-size: 1rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-#hero .scroll-hint {
-  position: absolute;
-  bottom: 2rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
+.skip:focus { left: 12px; top: 12px; }
 
-/* SECTIONS */
-section {
-  max-width: 900px;
+/* ─── shared bits ─────────────────────────────────────────────────────────── */
+
+.shell {
+  max-width: var(--shell);
   margin: 0 auto;
-  padding: 5rem 2rem;
+  padding: 0 var(--pad);
 }
-section h2 {
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
+
+/* Film grain. One SVG turbulence tile, blended over whatever is beneath it —
+   this is most of what separates "dark website" from "photographed". */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.eyebrow {
+  font-family: var(--accent);
+  font-size: 11px;
+  letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 2.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
-section h2::after {
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: clamp(28px, 5vw, 52px);
+}
+.section-head::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: #222;
+  background: linear-gradient(to right, var(--line), transparent);
+}
+.section-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(30px, 5.5vw, 54px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-/* SHOWS */
-.show-card {
-  display: grid;
-  grid-template-columns: 70px 1fr auto;
-  gap: 1rem 1.5rem;
+section { position: relative; padding: var(--section-y) 0; }
+
+/* Hairline between sections, fading at both ends. */
+section + section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--shell), 92vw);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line), transparent);
+}
+
+.btn {
+  display: inline-flex;
   align-items: center;
-  padding: 1.25rem 1.5rem;
-  background: var(--card);
-  border: 1px solid #222;
-  border-radius: 4px;
-  margin-bottom: 0.75rem;
-  transition: border-color 0.2s;
-}
-.show-card:hover { border-color: var(--gold); }
-.show-date {
-  text-align: center;
-  font-family: var(--mono);
-}
-.show-date .day { font-size: 1.8rem; color: var(--gold); line-height: 1; }
-.show-date .month { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-.show-info .venue { font-size: 1rem; color: var(--white); }
-.show-info .city { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
-.show-info .show-time { font-size: 0.8rem; color: var(--gold); margin-top: 0.2rem; }
-.show-info .notes { font-size: 0.8rem; color: var(--gold); margin-top: 0.25rem; font-style: italic; }
-.show-ticket a {
-  display: inline-block;
-  padding: 0.5rem 1rem;
+  gap: 10px;
+  padding: 14px 28px;
   border: 1px solid var(--gold);
-  border-radius: 3px;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-family: var(--accent);
+  font-size: 12px;
+  letter-spacing: 3px;
   text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease),
+              transform 0.25s var(--ease);
+}
+.btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.btn-solid { background: var(--gold); color: var(--ink); }
+.btn-solid:hover { background: var(--gold-lit); color: var(--ink); }
+.btn-quiet { border-color: var(--line-soft); color: var(--bone); }
+.btn-quiet:hover { border-color: var(--gold); background: transparent; color: var(--gold); }
+
+/* Scroll reveal, as progressive enhancement.
+   .reveal is VISIBLE by default and only starts hidden once app.js has put
+   .reveal-ready on <html> — i.e. only when something is actually going to
+   animate it. Hiding by default is how a whole page silently disappears: no
+   JS, a script error, or an IntersectionObserver that never fires (a
+   background tab gets no animation frames) all leave opacity:0 forever. */
+.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-ready .reveal.in { opacity: 1; transform: none; }
+
+/* ─── nav ─────────────────────────────────────────────────────────────────── */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px var(--pad);
+  /* Transparent over the hero; .is-stuck fills it in once you scroll. */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s var(--ease), border-color 0.35s var(--ease),
+              padding 0.35s var(--ease);
+}
+.nav.is-stuck {
+  background: rgba(10, 8, 6, 0.92);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.nav-logo {
+  font-family: var(--accent);
+  font-size: 18px;
+  letter-spacing: 4px;
   color: var(--gold);
   white-space: nowrap;
 }
-.show-ticket a:hover { background: var(--gold); color: var(--black); text-decoration: none; }
-#no-shows { color: var(--muted); font-style: italic; }
+.nav-links {
+  display: flex;
+  gap: clamp(16px, 3vw, 36px);
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  font-family: var(--accent);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--bone);
+  position: relative;
+  padding: 6px 0;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width 0.28s var(--ease);
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
 
-/* VIDEOS */
+/* Hamburger — the old site had no mobile menu at all, just tighter gaps. */
+.nav-toggle {
+  display: none;
+  width: 44px; height: 44px;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  position: absolute;
+  left: 50%;
+  width: 20px; height: 1.5px;
+  background: var(--gold);
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+.nav-toggle span { top: 50%; transform: translate(-50%, -50%); }
+.nav-toggle span::before { content: ''; left: 0; transform: translateY(-6px); }
+.nav-toggle span::after  { content: ''; left: 0; transform: translateY(6px); }
+.nav-toggle[aria-expanded="true"] span { transform: translate(-50%, -50%) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span::before { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span::after { transform: rotate(-90deg); }
+
+/* ─── hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  min-height: 100svh;          /* svh so mobile browser chrome can't clip it */
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: 120px var(--pad) 108px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink);
+}
+
+.hero-slides { position: absolute; inset: 0; z-index: -2; }
+.hero-slides .slide {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* Most band photos are portrait; biasing up keeps faces in frame when a
+     full-bleed letterbox crops them. */
+  object-position: center 32%;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease);
+  will-change: opacity;
+}
+.hero-slides .slide.is-active { opacity: 1; }
+/* Slow drift on whichever slide is showing — the "alive" part. */
+.hero-slides .slide.is-active.drift { animation: drift 18s ease-out forwards; }
+@keyframes drift {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.09); }
+}
+
+/* Scrim. Kept deliberately light: these are low-light stage photos (mean
+   luminance around 40–70 of 255), so a heavy scrim crushes them to black and
+   there's no point having a photo slideshow at all. Legibility is bought with
+   local text-shadows below instead of by dimming the whole picture. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* top — the nav sits here, and so does the eyebrow, which is small type
+       that can land on a bright wall as the slides rotate */
+    linear-gradient(to bottom, rgba(10,8,6,0.74) 0%, rgba(10,8,6,0.3) 20%,
+                    rgba(10,8,6,0.14) 38%, transparent 54%),
+    /* bottom — hand off into the page */
+    linear-gradient(to top, var(--ink) 0%, rgba(10,8,6,0.55) 13%, transparent 42%),
+    /* soft vignette to pull the eye centre */
+    radial-gradient(ellipse 100% 82% at 50% 45%, transparent 46%, rgba(10,8,6,0.4) 100%);
+}
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+
+/* Small type on a busy photo needs a tight dark halo that hugs the letters.
+   A broad radial "pool" behind the text block was tried first and is the wrong
+   tool: sized off the text it covers most of the hero and blacks the photo out
+   again. These stacked short-radius shadows read as no shape at all. */
+.halo {
+  text-shadow:
+    0 0 3px rgba(10, 8, 6, 0.98),
+    0 0 7px rgba(10, 8, 6, 0.92),
+    0 1px 2px rgba(10, 8, 6, 1);
+}
+
+/* Every hero text layer carries its own shadow, so the photo behind can stay
+   bright without the type ever landing on a light patch unprotected. */
+.hero-eyebrow {
+  margin-bottom: 20px;
+  color: var(--gold-lit);
+}
+.hero-eyebrow .spade { color: var(--gold-lit); margin-right: 10px; }
+
+.hero-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 12vw, 152px);
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+  text-shadow: 0 2px 22px rgba(10, 8, 6, 0.95), 0 0 90px rgba(10, 8, 6, 0.85);
+}
+.hero-name span { display: block; color: var(--gold); }
+
+.hero-tagline {
+  margin: 24px auto 0;
+  font-family: var(--accent);
+  font-size: clamp(10px, 1.6vw, 13px);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.hero-foot {
+  position: absolute;
+  left: 0; right: 0; bottom: 26px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Slide dots */
+.hero-dots { display: flex; gap: 10px; }
+.hero-dots button {
+  width: 26px; height: 3px;
+  border: 0; padding: 0;
+  background: rgba(242, 237, 227, 0.28);
+  cursor: pointer;
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.hero-dots button:hover { background: rgba(242, 237, 227, 0.6); }
+.hero-dots button[aria-current="true"] { background: var(--gold); transform: scaleY(1.6); }
+
+.hero-scroll {
+  font-family: var(--accent);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--bone);
+  opacity: 0.85;
+}
+.hero-scroll:hover { color: var(--gold); }
+.hero-scroll::after {
+  content: '';
+  display: block;
+  width: 1px; height: 26px;
+  margin: 10px auto 0;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+  50%      { opacity: 1;   transform: scaleY(1); }
+}
+
+/* ─── shows ───────────────────────────────────────────────────────────────── */
+
+/* The next show gets its own block — a band site's job is telling you where
+   to turn up next. */
+.next-show {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: clamp(20px, 4vw, 44px);
+  align-items: center;
+  padding: clamp(24px, 4vw, 40px);
+  margin-bottom: 36px;
+  background:
+    linear-gradient(135deg, rgba(196,154,42,0.09), transparent 60%),
+    var(--ink-card);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.next-show::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--gold), var(--gold-deep));
+}
+.next-label {
+  position: absolute;
+  top: 14px; right: 18px;
+  font-family: var(--accent);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.75;
+}
+.big-date { text-align: center; min-width: 92px; }
+.big-date .m {
+  display: block;
+  font-family: var(--accent);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.big-date .d {
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 9vw, 82px);
+  line-height: 0.9;
+  color: var(--bone);
+}
+.big-date .y {
+  display: block;
+  font-family: var(--accent);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ash-dim);
+}
+.next-show .event {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(21px, 3.4vw, 32px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.next-show .venue { margin-top: 8px; font-size: 16px; }
+.next-show .venue strong { color: var(--bone); font-weight: 600; }
+.next-show .city { color: var(--ash); }
+.next-show .when {
+  margin-top: 6px;
+  font-family: var(--accent);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+}
+.next-show .notes { margin-top: 8px; font-size: 14px; font-style: italic; color: var(--ash); }
+
+/* The rest of the run */
+.show-list { display: flex; flex-direction: column; }
+.show-row {
+  display: grid;
+  grid-template-columns: 86px 1fr auto;
+  gap: clamp(14px, 3vw, 32px);
+  align-items: center;
+  padding: 22px 4px;
+  border-top: 1px solid var(--line-soft);
+  transition: background 0.25s var(--ease), padding-left 0.25s var(--ease);
+}
+.show-row:last-child { border-bottom: 1px solid var(--line-soft); }
+.show-row:hover { background: rgba(196, 154, 42, 0.045); padding-left: 14px; }
+.show-row .rowdate {
+  font-family: var(--accent);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.show-row .event {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.show-row .venue { font-size: 14px; color: var(--ash); margin-top: 2px; }
+.show-row .when {
+  font-family: var(--accent);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-top: 4px;
+}
+.show-row .notes { font-size: 13px; font-style: italic; color: var(--ash-dim); margin-top: 4px; }
+
+/* Empty state. "Check back soon" wastes the slot — ask for the booking. */
+.shows-empty {
+  padding: clamp(30px, 6vw, 56px);
+  border: 1px dashed var(--line);
+  text-align: center;
+  background: var(--ink-2);
+}
+.shows-empty p { color: var(--ash); max-width: 46ch; margin: 0 auto 22px; }
+.shows-empty .headline {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(20px, 3.4vw, 28px);
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 10px;
+}
+
+/* ─── videos ──────────────────────────────────────────────────────────────── */
+
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(16px, 2.5vw, 26px);
 }
-.video-card { background: var(--card); border: 1px solid #222; border-radius: 4px; overflow: hidden; }
-.video-card:hover { border-color: var(--gold); }
-.video-embed {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
+.video-card {
+  background: var(--ink-card);
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
 }
+.video-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.video-embed { position: relative; aspect-ratio: 16 / 9; background: #000; }
 .video-embed iframe {
   position: absolute;
-  top: 0; left: 0;
+  inset: 0;
   width: 100%; height: 100%;
-  border: none;
+  border: 0;
 }
-.video-meta {
-  padding: 0.75rem 1rem;
+.video-meta { padding: 14px 16px; }
+.video-meta .title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
-.video-meta .title { font-size: 0.9rem; color: var(--white); }
-.video-meta .date { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+.video-meta .date {
+  font-family: var(--accent);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ash-dim);
+  margin-top: 4px;
+}
 
-/* LINKS */
-.link-grid {
+/* ─── about ───────────────────────────────────────────────────────────────── */
+
+.about-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-.link-btn {
-  display: flex;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(28px, 5vw, 64px);
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: var(--card);
-  border: 1px solid #222;
-  border-radius: 4px;
-  color: var(--white);
-  font-size: 0.9rem;
-  transition: border-color 0.2s, color 0.2s;
 }
-.link-btn:hover { border-color: var(--gold); color: var(--gold); text-decoration: none; }
-.link-btn .icon { font-size: 1.2rem; }
+.about-copy p {
+  max-width: var(--measure);
+  color: #ded7c9;
+  font-size: clamp(16px, 1.5vw, 18px);
+}
+.about-copy p + p { margin-top: 18px; }
+.about-copy .lede {
+  font-size: clamp(19px, 2.2vw, 25px);
+  line-height: 1.5;
+  color: var(--bone);
+  font-style: italic;
+}
+.about-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
+.about-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,8,6,0.55), transparent 55%);
+  pointer-events: none;
+}
 
-/* FOOTER */
-footer {
-  border-top: 1px solid #1a1a1a;
+/* ─── band ────────────────────────────────────────────────────────────────── */
+
+.band-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+  margin-top: 40px;
+}
+.member {
+  padding: 26px 22px;
+  background: var(--ink-card);
+  border: 1px solid var(--line-soft);
+  border-top: 2px solid var(--gold-deep);
+  transition: border-top-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.member:hover { border-top-color: var(--gold); transform: translateY(-4px); }
+.member .initial {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.28;
+}
+.member .name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 19px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 8px;
+}
+.member .role { font-size: 13px; color: var(--ash); line-height: 1.5; margin-top: 4px; }
+
+/* ─── booking ─────────────────────────────────────────────────────────────── */
+
+.booking {
+  background:
+    linear-gradient(160deg, rgba(196,154,42,0.07), transparent 55%),
+    var(--ink-2);
+}
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  margin-top: 36px;
+}
+.booking-block .label {
+  font-family: var(--accent);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 14px;
+}
+.booking-block .big {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(17px, 2vw, 21px);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+.booking-block p { font-size: 14px; color: var(--ash); }
+
+.socials { display: flex; flex-direction: column; gap: 10px; }
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--accent);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.social:hover { color: var(--gold); }
+.social .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* ─── footer ──────────────────────────────────────────────────────────────── */
+
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 44px var(--pad);
   text-align: center;
-  padding: 2rem;
-  font-size: 0.75rem;
-  color: var(--muted);
-  letter-spacing: 0.1em;
+}
+.footer-logo {
+  font-family: var(--accent);
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: var(--gold);
+}
+.footer-text {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  margin-top: 10px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .show-card { grid-template-columns: 60px 1fr; }
-  .show-ticket { grid-column: 1 / -1; }
-  nav ul { gap: 1rem; }
+/* ─── responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-photo { max-width: 460px; aspect-ratio: 3 / 4; }
+  .next-show { grid-template-columns: auto 1fr; }
+  .next-show .btn { grid-column: 1 / -1; justify-self: start; }
+}
+
+@media (max-width: 720px) {
+  .nav-toggle { display: block; }
+  /* Off-canvas panel; .is-open is toggled by app.js. */
+  .nav-links {
+    position: fixed;
+    inset: 0 0 auto 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 84px var(--pad) 32px;
+    background: rgba(10, 8, 6, 0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-102%);
+    transition: transform 0.4s var(--ease);
+    visibility: hidden;
+  }
+  .nav-links.is-open { transform: none; visibility: visible; }
+  .nav-links a { font-size: 15px; letter-spacing: 4px; padding: 14px 0; display: block; }
+
+  .hero { padding-top: 100px; }
+  .hero-slides .slide { object-position: center 26%; }
+  .show-row { grid-template-columns: 74px 1fr; }
+  .show-row .btn { grid-column: 1 / -1; justify-self: start; margin-top: 6px; }
+  .big-date { min-width: 72px; }
+}
+
+@media (max-width: 420px) {
+  .hero-name { letter-spacing: 0; }
+  .btn { padding: 12px 20px; letter-spacing: 2px; }
+}
+
+/* ─── motion & print ──────────────────────────────────────────────────────── */
+
+/* An auto-playing photo background is exactly what this setting is for. JS also
+   stops advancing slides; this covers the CSS half. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .hero-slides .slide.is-active.drift { animation: none; }
+}
+
+@media print {
+  .nav, .hero-foot, .nav-toggle, .grain::after { display: none; }
+  body { background: #fff; color: #000; }
 }

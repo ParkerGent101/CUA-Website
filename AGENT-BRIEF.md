@@ -20,13 +20,15 @@ So: work on a `wt/<task>` branch, commit there, and **never push**. Merging is P
 ## Build and test, exactly
 
 - Run: `python -m http.server 8000` from the repo root, then `http://localhost:8000`.
+  (`.claude/launch.json` defines this as the `cua-site` preview target.)
 - Container check: `docker build -t coming-up-aces .`
 - **There are no automated tests.** Verification is opening the page — desktop **and** mobile. Do not
   claim a test passed.
 - Show and video data is edited through `python scripts/cua.py` (`list`, `add-show`, `edit-show`,
-  `remove-show`, `add-video`, `remove-video`, `push`, `status`) — never by hand, and never with a
-  PowerShell script: PS 5.1's `ConvertTo-Json` reindents the file, escapes `&`, and mojibakes the
-  em-dashes in the Local Fest entries. `scripts\cua-update.ps1` is a prompt wrapper over the same tool.
+  `remove-show`, `add-video`, `remove-video`, `sync-photos`, `optimize-stills`, `push`, `status`) —
+  never by hand, and never with a PowerShell script: PS 5.1's `ConvertTo-Json` reindents the file,
+  escapes `&`, and mojibakes any em-dash in an event name.
+  `scripts\cua-update.ps1` is a prompt wrapper over the same tool.
   Every `cua.py` command is non-interactive and nothing is pushed without `--push`.
 - Deploy target: Cloud Run `cua-website`, region **`europe-west1`**, port 8080, GCP project
   `band-website-495219`. Note the region — the other two projects are `us-central1`.
@@ -34,10 +36,14 @@ So: work on a `wt/<task>` branch, commit there, and **never push**. Merging is P
 ## Rules that are decisions, not preferences
 
 - **The stack stays static.** Plain HTML, CSS and vanilla JS: `index.html`, `epk.html`, `app.js`,
-  `style.css`, `shows.json`, `videos.json`. No frameworks, no build step, unless Parker asks.
-- **Show dates are `YYYY-MM-DD`, always.** Past-show auto-hide reads the `data-date` attribute in
-  `app.js`; changing the date format or that attribute silently breaks the hiding logic. This is the
-  single most breakable thing in the repo.
+  `style.css`, `shows.json`, `videos.json`, `gallery.json`. No frameworks, no build step, unless
+  Parker asks. Photos are optimised at publish time by `cua.py`, never at runtime — the live site
+  never talks to Google Drive.
+- **Show dates are `YYYY-MM-DD`, always.** Past-show auto-hide is the date filter in `app.js`'s
+  `renderShows()`: it parses `s.date + 'T12:00:00'` (local noon, so a timezone offset can't roll a
+  show back a day) and drops anything earlier than today. Change the date format and the hiding
+  silently breaks. There is **no `data-date` attribute** — this brief and CLAUDE.md both claimed
+  there was, and no such attribute has ever existed in the code.
 - **`shows.json` here is canonical**, and as of 2026-08-30 it is the *only* copy — Mission Control's
   Band module and its `push_site` tool were removed when that app was cut down to finance-only.
 - **Optimise photos before committing them.** `photos/` is served directly.
@@ -53,7 +59,14 @@ So: work on a `wt/<task>` branch, commit there, and **never push**. Merging is P
 2. **A CI "version conflict" failure is a GCP timing race, not your code.** Re-run the workflow. Do not
    start debugging the site — this has cost time before.
 
-Also worth knowing: `videos.json` is currently the four bytes `[]`. Empty on purpose, not corrupt.
+Also worth knowing: `videos.json` is currently the four bytes `[]`. Empty on purpose, not corrupt —
+and `app.js` now removes the Videos section and its nav link entirely rather than printing
+"Videos coming soon".
+
+Third trap, added 2026-09: **`style.css` and `app.js` were dead files** for months. `index.html`
+inlined all of its CSS and JS and linked neither, while both briefs named them as the key files.
+Anyone editing them saw no effect. The rebuild extracted the inline code into them and both pages
+now link them — but if you ever see styling that won't budge, check the link tags first.
 
 ## Before you claim a task
 
