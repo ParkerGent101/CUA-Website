@@ -63,13 +63,34 @@ function folder(id) {
   catch (e) { problems.push('Could not open folder ' + id + ' — ' + e.message); return null; }
 }
 
+/**
+ * Stand-in for a folder a dry run would have created.
+ * It has to answer the same calls a real Folder does, because the very next
+ * thing we do is ensure() children inside it — and a folder that does not
+ * exist yet is, correctly, empty of everything.
+ */
+const EMPTY = { hasNext: () => false, next: () => null };
+function plannedFolder(name) {
+  return {
+    __planned: true,
+    getName: () => name,
+    getFoldersByName: () => EMPTY,
+    getFilesByName: () => EMPTY,
+    getFolders: () => EMPTY,
+    getFiles: () => EMPTY,
+    createFolder: n => plannedFolder(n),
+    setName: () => {},
+    moveTo: () => {}
+  };
+}
+
 /** Find a child folder by name, or make it. Idempotent. */
 function ensure(parent, name) {
   if (!parent) return null;
   const hit = parent.getFoldersByName(name);
   if (hit.hasNext()) { const f = hit.next(); say('   exists  ' + name); return f; }
   say('   CREATE  ' + name + '   (in ' + parent.getName() + ')');
-  if (DRY_RUN) return { __planned: name, getName: () => name };
+  if (DRY_RUN) return plannedFolder(name);
   return parent.createFolder(name);
 }
 
