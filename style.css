@@ -286,7 +286,7 @@ section + section::before {
   align-content: center;
   justify-items: center;
   text-align: center;
-  padding: 120px var(--pad) 108px;
+  padding: 120px var(--pad);
   overflow: hidden;
   isolation: isolate;
   background: var(--ink);
@@ -374,49 +374,6 @@ section + section::before {
   margin-top: 54px;
 }
 
-.hero-foot {
-  position: absolute;
-  left: 0; right: 0; bottom: 26px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-
-/* Slide dots */
-.hero-dots { display: flex; gap: 10px; }
-.hero-dots button {
-  width: 26px; height: 3px;
-  border: 0; padding: 0;
-  background: rgba(242, 237, 227, 0.28);
-  cursor: pointer;
-  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
-}
-.hero-dots button:hover { background: rgba(242, 237, 227, 0.6); }
-.hero-dots button[aria-current="true"] { background: var(--gold); transform: scaleY(1.6); }
-
-.hero-scroll {
-  font-family: var(--accent);
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--bone);
-  opacity: 0.85;
-}
-.hero-scroll:hover { color: var(--gold); }
-.hero-scroll::after {
-  content: '';
-  display: block;
-  width: 1px; height: 26px;
-  margin: 10px auto 0;
-  background: linear-gradient(to bottom, var(--gold), transparent);
-  animation: pulse 2.4s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
-  50%      { opacity: 1;   transform: scaleY(1); }
-}
 
 /* ─── shows ───────────────────────────────────────────────────────────────── */
 
@@ -785,6 +742,6 @@ section + section::before {
 }
 
 @media print {
-  .nav, .hero-foot, .nav-toggle, .grain::after { display: none; }
+  .nav, .nav-toggle, .grain::after { display: none; }
   body { background: #fff; color: #000; }
 }

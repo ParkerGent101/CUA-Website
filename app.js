@@ -120,20 +120,9 @@
     hydrate(0);
     hydrate(1);                                  // next one ready before it's needed
 
-    var dots = $('.hero-dots');
-    var buttons = [];
-    if (dots) {
-      slides.forEach(function (_, i) {
-        var b = el('button');
-        b.type = 'button';
-        b.setAttribute('aria-label', 'Photo ' + (i + 1) + ' of ' + slides.length);
-        b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-        b.addEventListener('click', function () { show(i); restart(); });
-        dots.appendChild(b);
-        buttons.push(b);
-      });
-    }
-
+    // No picker any more — the hero is just photographs cycling behind the
+    // name. #hero-slides is aria-hidden, so this is decorative for assistive
+    // tech and nothing is lost by having no controls.
     function show(i) {
       if (i === current) return;
       hydrate(i);
@@ -142,18 +131,16 @@
       current = i;
       var next = slides[current];
       next.classList.add('is-active');
-      if (!reduceMotion) {
-        // Restart the drift from scale(1) each time round.
-        next.classList.remove('drift');
-        void next.offsetWidth;
-        next.classList.add('drift');
-      }
-      buttons.forEach(function (b, bi) {
-        b.setAttribute('aria-current', bi === current ? 'true' : 'false');
-      });
+      // Restart the drift from scale(1) each time round.
+      next.classList.remove('drift');
+      void next.offsetWidth;
+      next.classList.add('drift');
     }
 
-    if (reduceMotion) return;                    // manual navigation only
+    // Reduced motion holds on the first photo. With the dots gone there is no
+    // manual alternative, which is fine here and not for a carousel carrying
+    // real content: these are decorative background frames.
+    if (reduceMotion) return;
 
     slides[0].classList.add('drift');
     var timer = null;
