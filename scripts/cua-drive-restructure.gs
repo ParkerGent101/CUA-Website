@@ -1,25 +1,33 @@
 /**
  * COMING UP ACES — Google Drive restructure
  * ------------------------------------------------------------------
- * Rebuilds "Comin Up Aces Material" into the proposed layout.
+ * Rebuilds "Comin Up Aces Material" into the layout we agreed, and can
+ * hand the archive over to the band account.
  *
- *   NEVER DELETES ANYTHING. Only creates, moves and renames.
+ *   Two entry points, run them in this order:
+ *     restructure()        build the new shelf, move everything into it
+ *     transferOwnership()  hand your files to the band account
+ *
  *   Safe to run more than once — it adopts folders that already exist.
+ *   The ONLY thing it ever removes is the raw practice takes, and those
+ *   go to Drive's Trash (recoverable for 30 days), never a hard delete.
  *
  * HOW TO RUN
  *   1. script.google.com  →  New project
  *   2. Paste this whole file over the default Code.gs
- *   3. Run  ▶ restructure   — leave DRY_RUN = true the first time.
- *      Google will ask you to authorise the script; that is it asking
- *      for permission to touch your own Drive. Review and accept.
- *   4. Read the log (Ctrl+Enter). It prints every move it intends.
- *   5. Set DRY_RUN = false, run it again for real.
- *
- * If anything looks wrong afterwards, every move is listed in the log
- * and can be reversed by hand — nothing is destroyed.
+ *   3. Check the two settings directly below this comment
+ *   4. Run  ▶ restructure   with DRY_RUN = true. Google will ask you to
+ *      authorise it touching your own Drive; review and accept.
+ *   5. Read the log (Ctrl+Enter). It prints every move before making it.
+ *   6. Set DRY_RUN = false, run restructure() again for real.
+ *   7. Then run transferOwnership() the same way.
  */
 
 const DRY_RUN = true;   // ← flip to false to actually make the changes
+
+// Decisions from 11 Sep 2026:
+const BAND_ACCOUNT          = 'comingupaces1@gmail.com';  // ← CHECK THIS ADDRESS IS RIGHT
+const TRASH_PRACTICE_VIDEOS = true;   // the 10 raw practice takes, 4.75 GB → Trash
 
 const ROOT_ID = '1Tu1cT82_bpGOziIeVskEd_4gDRdA6tNj';  // Comin Up Aces Material
 
@@ -79,10 +87,7 @@ function moveFolder(f, dest) {
   catch (e) { problems.push('Move folder "' + f.getName() + '" failed — ' + e.message + '  (likely owned by another account)'); }
 }
 
-/**
- * Move every file out of `src` into `dest`.
- * filterFn(file) → true to move it. Omit to move all.
- */
+/** Move every file out of `src` into `dest`. filterFn(file) → true to move it. */
 function moveFiles(src, dest, filterFn) {
   if (!src || !dest) return 0;
   const it = src.getFiles();
@@ -101,9 +106,42 @@ function moveFiles(src, dest, filterFn) {
   return n;
 }
 
+/**
+ * Send every file in `src` to Drive's Trash.
+ * This is the one destructive step in the script, and it is still reversible:
+ * Trash holds files 30 days, restorable from drive.google.com/drive/trash.
+ * Storage is NOT freed until the Trash is emptied.
+ */
+function trashContents(src, what) {
+  if (!src) return;
+  const it = src.getFiles();
+  let n = 0, gb = 0;
+  while (it.hasNext()) {
+    const f = it.next();
+    let size = 0;
+    try { size = f.getSize() / 1073741824; } catch (e) { size = 0; }
+    n++; gb += size;
+    say('   TRASH   ' + f.getName() + '   (' + size.toFixed(2) + ' GB)');
+    if (!DRY_RUN) {
+      try { f.setTrashed(true); }
+      catch (e) { problems.push('Could not trash "' + f.getName() + '" — ' + e.message + '  (owner: ' + safeOwner(f) + ')'); }
+    }
+  }
+  say('   → ' + n + ' ' + what + ', ' + gb.toFixed(2) + ' GB sent to Trash.');
+  say('     Recoverable for 30 days. Storage is not freed until you empty the Trash.');
+}
+
 function safeOwner(f) {
   try { return f.getOwner() ? f.getOwner().getEmail() : 'unknown'; }
   catch (e) { return 'unknown'; }
+}
+
+/** Depth-first walk over every file under `f`. */
+function walk(f, fn) {
+  const files = f.getFiles();
+  while (files.hasNext()) fn(files.next());
+  const subs = f.getFolders();
+  while (subs.hasNext()) walk(subs.next(), fn);
 }
 
 const isImage = f => /\.(jpe?g|png|heic|heif|tiff?|webp)$/i.test(f.getName());
@@ -128,7 +166,7 @@ function restructure() {
   // 1. The new shelf
   say('\n[1] New top-level folders');
   const wWebsite  = ensure(root, '01 WEBSITE');
-  const wHero     = ensure(wWebsite, 'Hero Photos');
+                    ensure(wWebsite, 'Hero Photos');
                     ensure(wWebsite, 'Press Stills');
   const wPress    = ensure(root, '02 PRESS KIT');
                     ensure(wPress, 'Logos & Artwork');
@@ -137,7 +175,6 @@ function restructure() {
   const wSongs    = ensure(root, '04 SONGS');
   const wArchive  = ensure(root, '99 RAW ARCHIVE');
   const wRawShow  = ensure(wArchive, 'Show Footage Raw');
-                    ensure(wArchive, 'Practice Raw');
 
   // 2. Rename the two folders that just need a number
   say('\n[2] Renames in place');
@@ -146,10 +183,11 @@ function restructure() {
   rename(promo,    '05 BAND BUSINESS');
   rename(setLists, '06 SET LISTS');
 
-  // 3. Songs
+  // 3. Songs.  The raw practice takes go to Trash — the finished Clips stay.
   say('\n[3] 04 SONGS');
   const covers    = folder(ID.practiceVideos);
   const originals = folder(ID.originalMat);
+  if (TRASH_PRACTICE_VIDEOS) trashContents(covers, 'raw practice take(s)');
   moveFolder(covers, wSongs);    rename(covers,    'Covers');
   moveFolder(originals, wSongs); rename(originals, 'Originals');
 
@@ -160,10 +198,11 @@ function restructure() {
   const georgesVideo = ensure(georges, 'Video');
   moveFiles(folder(ID.sv_georges), georgesVideo);          // the 17 MVI_*.MOV
   moveFolder(folder(ID.sv_gopro), wRawShow);               // 7.32 GB of card dump
-  moveFiles(folder(ID.gp_georgesPics), georgesPhoto);      // the 907 MB zip — still needs unzipping by hand
+  moveFiles(folder(ID.gp_georgesPics), georgesPhoto);      // the 907 MB zip — unzip by hand after
 
-  // 5. Shows — Stoic Brews.  NOTE: date taken from the camera files (Jan 2025).
+  // 5. Shows — Stoic Brews.  Date taken from the camera files (Jan 2025).
   //    Photos span Jan 1–2 and Jan 25, so this may really be two nights — worth checking.
+  //    Brandon's 70 camera shots land here, per Parker on 11 Sep 2026.
   say('\n[5] 03 SHOWS / 2025-01 Stoic Brews');
   const stoic      = ensure(wShows, '2025-01 Stoic Brews');
   const stoicPhoto = ensure(stoic, 'Photos');
@@ -181,13 +220,13 @@ function restructure() {
 
   // 7. Website + press kit
   say('\n[7] 01 WEBSITE / 02 PRESS KIT');
-  moveFolder(folder(ID.clips), wWebsite);                  // 5 finished clips
-  if (promo && !DRY_RUN) {
-    const sp = promo.getFilesByName('CUA Stage Plot');
-    if (sp.hasNext()) { const f = sp.next(); say('   MOVE    CUA Stage Plot  →  02 PRESS KIT/');
-                        try { f.moveTo(wPress); } catch (e) { problems.push('Stage Plot move failed — ' + e.message); } }
-  } else if (promo) {
+  moveFolder(folder(ID.clips), wWebsite);                  // the 5 finished clips — kept
+  if (promo) {
     say('   MOVE    CUA Stage Plot  →  02 PRESS KIT/');
+    if (!DRY_RUN) {
+      const sp = promo.getFilesByName('CUA Stage Plot');
+      if (sp.hasNext()) { try { sp.next().moveTo(wPress); } catch (e) { problems.push('Stage Plot move failed — ' + e.message); } }
+    }
   }
 
   // 8. Strays sitting loose in My Drive
@@ -201,13 +240,68 @@ function restructure() {
   reportEmpty(folder(ID.generalPhotos));
 
   say('\n[10] Still to do by hand');
-  say('   • Unzip "P&R Georges Show.zip" inside 03 SHOWS/2026-06-25 Georges Majestic/Photos/');
+  say('   • Run transferOwnership() to hand your files to ' + BAND_ACCOUNT);
+  say('   • Empty the Trash to actually free the 4.75 GB of practice takes');
+  say('   • Unzip "P&R Georges Show.zip" in 03 SHOWS/2026-06-25 Georges Majestic/Photos/');
   say('   • Pick 8–12 LANDSCAPE shots into 01 WEBSITE/Hero Photos, prefixed 01- 02- 03-…');
   say('   • Split 04 SONGS/Originals into one folder per song');
   say('   • Share 01 WEBSITE/Hero Photos as "Anyone with the link — Viewer"');
 
   finish();
 }
+
+// ────────────────────────────────────────────────── ownership handover ──
+
+/**
+ * Hands every file YOU own under the band folder to BAND_ACCOUNT.
+ *
+ * You can only give away files you own. Anything uploaded by Riley or Brandon
+ * has to be transferred by them — this lists those per account so you can ask.
+ * Google may also refuse to transfer certain file types between consumer
+ * accounts; any refusal is reported rather than silently skipped.
+ *
+ * Run restructure() first, so the tree is settled before ownership moves.
+ */
+function transferOwnership() {
+  log.length = 0; problems.length = 0;
+
+  const me = Session.getEffectiveUser().getEmail();
+  say(DRY_RUN ? '=== DRY RUN — ownership handover ===\n' : '=== LIVE — handing ownership over ===\n');
+  say('Signed in as : ' + me);
+  say('Handing to   : ' + BAND_ACCOUNT + '\n');
+
+  if (me === BAND_ACCOUNT) { say('Already signed in as the band account — nothing to do.'); finish(); return; }
+
+  const root = folder(ROOT_ID);
+  if (!root) { finish(); return; }
+
+  const others = {};
+  let mine = 0, gb = 0;
+
+  walk(root, f => {
+    const owner = safeOwner(f);
+    if (owner !== me) { others[owner] = (others[owner] || 0) + 1; return; }
+    mine++;
+    try { gb += f.getSize() / 1073741824; } catch (e) {}
+    if (!DRY_RUN) {
+      try { f.setOwner(BAND_ACCOUNT); }
+      catch (e) { problems.push('Transfer "' + f.getName() + '" failed — ' + e.message); }
+    }
+  });
+
+  say(mine + ' file(s) you own (' + gb.toFixed(2) + ' GB)  →  ' + BAND_ACCOUNT);
+  const keys = Object.keys(others);
+  if (keys.length) {
+    say('\nNot yours to give — ask each of these to run this script from their own account:');
+    keys.forEach(o => say('   ' + others[o] + ' file(s) owned by ' + o));
+  }
+  say('\nAfter this, ' + BAND_ACCOUNT + ' carries roughly ' + (gb + 2.5).toFixed(1) + ' GB.');
+  say('A free account holds 15 GB — check it fits before the others transfer theirs too.');
+
+  finish();
+}
+
+// ────────────────────────────────────────────────────────────── detail ──
 
 function sweepStray(name, dest) {
   if (!dest) return;
@@ -220,16 +314,16 @@ function sweepStray(name, dest) {
 
 function reportEmpty(f) {
   if (!f) return;
-  const nf = f.getFolders().hasNext(), nfi = f.getFiles().hasNext();
-  say('   ' + f.getName() + ' — ' + (nf || nfi ? 'STILL HAS CONTENT, look before removing' : 'now empty, safe to delete by hand'));
+  const hasAny = f.getFolders().hasNext() || f.getFiles().hasNext();
+  say('   ' + f.getName() + ' — ' + (hasAny ? 'STILL HAS CONTENT, look before removing' : 'now empty, safe to delete by hand'));
 }
 
 function finish() {
   if (problems.length) {
     say('\n=== ' + problems.length + ' PROBLEM(S) ===');
     problems.forEach(p => say('   ! ' + p));
-    say('\n  Moves usually fail because the file belongs to another band member.');
-    say('  Ask that person to run this, or to transfer ownership to comingupaces1.');
+    say('\n  Moves and transfers usually fail because the file belongs to another band member.');
+    say('  Ask that person to run this script from their own account.');
   } else {
     say('\n=== no problems ===');
   }
