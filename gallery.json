@@ -1,87 +1,162 @@
 [
   {
-    "id": "local:hero.JPG",
-    "name": "hero.JPG",
-    "src": "photos/gallery/slide-b9a4e30b3f",
+    "id": "1h9hX0akSCITZ6fKpnGmaBQpGibbDUgl_",
+    "name": "01-twin-guitars.jpg",
+    "src": "photos/gallery/slide-8fb9500a56",
     "widths": [
       1280,
-      1920
+      1920,
+      2560
     ],
-    "width": 2208,
-    "height": 1562,
-    "lum": 63.5,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABQBACdASoYABEAPtFWo0uoJKMhsAgBABoJaAC06BoMd2hhK3RZ98X1QW4AAP71zu2u9ZFEY/d53+GKNrvetKRk/x0Rzqajr7ov2oVWxWABbho1yOpdDU9pQNQXvZRDQ6yt+r6gbiFDIXL3IhvICi+lCMpF4E22wI96WWbFnUG8R3EEmQAAAA==",
+    "width": 4272,
+    "height": 2848,
+    "lum": 117.3,
+    "alt": "Two guitarists facing each other mid-song under purple stage lights",
+    "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAABQBACdASoYABAAPtFWo0uoJKMhsAgBABoJQBOgAyfIAW8XvD/pFYRAX3oAAP7QiqcjOD21RZNCMwbvKW77Chs25LWjQMM0KHCad4pjPwDIzuNkiOxGpXV34iX7x5UdgmRSbnVVOc+H/Or87m/RD7ZTuzBgAAAA",
     "order": 0
   },
   {
-    "id": "local:press-1.JPG",
-    "name": "press-1.JPG",
-    "src": "photos/gallery/slide-ebdd0eb89f",
+    "id": "16Yd0nFVZXDgt5U7lwXDnSXLdACfSs5Wu",
+    "name": "02-full-stage.jpg",
+    "src": "photos/gallery/slide-0078e87598",
     "widths": [
-      1280
+      1280,
+      1920,
+      2560
     ],
-    "width": 1628,
-    "height": 2208,
-    "lum": 41.2,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAACwBgCdASoYACEAPs1YoEunpaMhtVQIAPAZiWoAgqMucayQiNgu25MJe0/zql0PGziqAd4mdNMjV1dM0qjcAAD+9pPWbKQaKmxyDCSE7U1j/+1Y3y/hQPxY8rGuK/zDvSIz3Bcyxlr1jj+3fdlJvvoGt/+93ncrX8PI/80PWNJJQ215lKu19Fl8BuVdRHDoEg6Fo6UbQwb2Tcj5qqyrRApo67ZvUfr11xP+yLIfQAA=",
+    "width": 4272,
+    "height": 2848,
+    "lum": 116.7,
+    "alt": "The full band on stage beneath the George's Majestic sign",
+    "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAACQAwCdASoYABAAPtFUo0uoJKMhsAgBABoJZgCdH8AC+wKgKxFAAPt7VHimTnoRYXJ/MuClaHpCLWEvIfxS76UkVZdd/TfTdSJpcr5a21Fl+mkJt2eE8Do4F86VmXCxM2qJTZRLyGPocUMutjqnft4GdaZpn4AA",
     "order": 1
   },
   {
-    "id": "local:press-2.JPG",
-    "name": "press-2.JPG",
-    "src": "photos/gallery/slide-e21454c554",
+    "id": "1HjDkmk9DluDFZrvO28Zwca8dsZIT8PSt",
+    "name": "03-banner-vocals.jpg",
+    "src": "photos/gallery/slide-8f66e40e3b",
     "widths": [
-      1280
+      1280,
+      1920,
+      2560
     ],
-    "width": 1656,
-    "height": 2208,
-    "lum": 73.2,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAAAQBgCdASoYACAAPslWn0unpSKhsAwA8BkJbACdMoR5n7Nw7m5gELGyuU2lptl+5McZ1KGQczx2h4AA/qnLzIaDD1gnllaloV/zMZvNZy28P6tB3Fno1hUGT8NxdMrpGWbtSyXpRY52FzBCaN869A6iD/oarxCen+P3NZ9BxrcZIDKivbT2uMBM5VaT2elDBaQKSMB25OiVvI8iA5d0n8jNSd9Nm6zyd8HFl8OwIhKBeIhn720NTbMMQfgeAAAA",
+    "width": 4272,
+    "height": 2848,
+    "lum": 86.8,
+    "alt": "Singing into the mic in front of the Coming Up Aces banner",
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABwBACdASoYABAAPtFWpUwoJKOiMAgBABoJZgC7MoADQIKFuDO0bY6eVr4wgAD+0ZJMV4uCi+N1XHdUfMYX9fPo7XN4CLaDAyf+RMSWZkO4f6IXMeGf39JgR48yOHhFq2cQCMQ7KWb6gAAA",
     "order": 2
   },
   {
-    "id": "local:press-3.JPG",
-    "name": "press-3.JPG",
-    "src": "photos/gallery/slide-a0e08729b5",
+    "id": "1-yxWi3FI0-L3E2ffMJ_9zCfvfr-1uUyM",
+    "name": "04-keys-foreground.jpg",
+    "src": "photos/gallery/slide-946d5ceb79",
     "widths": [
-      1280
+      1280,
+      1920,
+      2560
     ],
-    "width": 1658,
-    "height": 2208,
-    "lum": 72.5,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAADwBgCdASoYACAAPs1OokunpCMht/VYAPAZiWwAnTlBUt3BfVeIEKg60mQmVgij3/Ja6FT2IY7VnANmhfcW1lDQAP7y9Dh6+NzW3hsrOTVUoOxkh+Zo1E9Vk3gWZiQMoWEDf0ZV3OJQh2GViBBFq/wjS4zRhAyjf28NZ3bQEPWbwDabxYO9spxmYP8wMv7i/Qn0gj/hjEx8wJyxdo0Ko0rPuW0rTIHhl20rWfVzSxKeuuvvQoEmcy/UwAA=",
+    "width": 4272,
+    "height": 2848,
+    "lum": 95.5,
+    "alt": "Red electric keyboard in the foreground, the rest of the band playing behind",
+    "lqip": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwBACdASoYABAAPtFWpEuoJKOhsAgBABoJQBOj+ABOE/rBJGh3JPqqjyAA/tHhLwmQ5wkKGY7MyDD0cV73vTBwWn30UNsC00+9MYBLYUcSdJq0e6Eg1Rzla3zWohgGQ3QMk8P4SzoXDTiAAAA=",
     "order": 3
   },
   {
-    "id": "local:press-4.JPG",
-    "name": "press-4.JPG",
-    "src": "photos/gallery/slide-2cddd90372",
+    "id": "1OuI6iyHjufuJp_-xAKqMBooKYeQx4JxL",
+    "name": "05-guitars-leaning-in.jpg",
+    "src": "photos/gallery/slide-481e618a21",
     "widths": [
-      909
+      1280,
+      1920,
+      2560
     ],
-    "width": 909,
-    "height": 1852,
-    "lum": 47.1,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAAAwCACdASoYADEAPslQoUunpKMht/VYAPAZCWQArDMkugAkzOJMeV5wcdXIr5quu/AMeV0UnpkQEqiwPLJcNe8YMY+yBofRm87WmAD+8N7TmOsJrmO8U2eTHIhdvl9VLTHVZpta/cT+Yvv0QUBXhfQK+Gf318CRd12ZyqqcshWRUopYynDLJRN9/xsjIu6k4hY4/6O3Mf+3evvzxmS8bvinJDKmt3Vg8iZTEm0T8L6HZfGFz58oDA6JayDjmez01aQ197tej68bKvd0vS1bt8s0VJ62bpLNq1niUuJ0riAfd8Bl/LwAAA==",
+    "width": 4272,
+    "height": 2848,
+    "lum": 104.1,
+    "alt": "Two guitarists leaning into the same riff",
+    "lqip": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAABQBACdASoYABAAPtFWo0uoJKMhsAgBABoJQBOgA4TlZfzlcv24fXZxwOwAAPWXBrpfNtTiETouLotk4I014tQID+Dheaiy4HeiZq2Q4k8JuG/1BZY3dT02preioGrGZWha+wxupGRfCJyAAAA=",
     "order": 4
   },
   {
-    "id": "local:press-7.JPG",
-    "name": "press-7.JPG",
-    "src": "photos/gallery/slide-246e356bbc",
+    "id": "1obiqlE84UFyuOixI388A9mmjjpXkGnAD",
+    "name": "06-arm-raised.jpg",
+    "src": "photos/gallery/slide-44721a0a1c",
     "widths": [
-      1280
+      1280,
+      1920,
+      2560
     ],
-    "width": 1656,
-    "height": 2208,
-    "lum": 65.0,
-    "alt": "Coming Up Aces live",
-    "lqip": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAACQBQCdASoYACAAPtFep06oJSOiKAqpABoJaQABHvAshBN0vMAQem5xkJo3ZqwN+2K/rTsWAAD++KOXLyJ03E5XFPtcqhMOOJxcdYsGm6q3vkiWLw+gOoSh+JoPXDCDKnmTl0QDKpZjiQFwAm/HDi1cG4OxSH18PxvRHRreI0PfmZzDmqWC2f5zYghiSr7+lS3Nmqs7QZoAAA==",
+    "width": 4272,
+    "height": 2848,
+    "lum": 97.6,
+    "alt": "Bassist with one arm raised as the song lands",
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwBACdASoYABAAPtFWpUwoJKOiMAgBABoJYwCdMoADQdw57B9oiwJjz+AA/hd2n+hHe9yeftGie0I9OSPHbAO0V9BLUAmFkAZwDIrZzPtabx7A/Hx8e9aFeCZl/x3f+OcjNYsPqXWE+oyxHSvv4AAA",
     "order": 5
+  },
+  {
+    "id": "1kxfe6VwOqDU8ajJY4wPh-czVRspwuU5a",
+    "name": "07-three-up.jpg",
+    "src": "photos/gallery/slide-0dd8e780b4",
+    "widths": [
+      1280,
+      1920,
+      2560
+    ],
+    "width": 4272,
+    "height": 2848,
+    "lum": 110.3,
+    "alt": "Three of the band spread across the stage under purple light",
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAwBACdASoYABAAPtFWpEuoJKOhsAgBABoJYgCdABsvK4XPAcYABuGmpwAA/h6kUgY+JpDCaJXj3HTofFyLSr3wzEk6TSHSAGBTSkJUd43taYeK1zCXvz0ADVVh7xwYwjThTQwZ2/TpgByHeNPXh2AA",
+    "order": 6
+  },
+  {
+    "id": "15Dr8V7vfeDMXKm_JyytY9_jjzZsiIlIX",
+    "name": "08-drums.jpg",
+    "src": "photos/gallery/slide-903e54da19",
+    "widths": [
+      1280,
+      1920,
+      2560
+    ],
+    "width": 4272,
+    "height": 2848,
+    "lum": 85.6,
+    "alt": "Drummer in a hat and sunglasses mid-fill",
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAwBACdASoYABAAPtFUo0uoJKMhsAgBABoJQBdmUI8DBVeGAi0Q1al4aZAA/s6CYyDkGVcv185Ju8vkAfRicmLPMsIy92PN8ay8e33ggofuarfE9/NSjzgy/RYYVXiAAAA=",
+    "order": 7
+  },
+  {
+    "id": "1QwCf2V80J4vSKgRTG4_OE8Dx3yUa06U7",
+    "name": "09-georges-wide.jpg",
+    "src": "photos/gallery/slide-aa12454849",
+    "widths": [
+      1280,
+      1920,
+      2560
+    ],
+    "width": 4272,
+    "height": 2848,
+    "lum": 83.4,
+    "alt": "Wide view of the stage with the George's Majestic sign overhead",
+    "lqip": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADQAwCdASoYABAAPtFWpkuoJKOhsAgBABoJZgCdAGfvf1Dq597ucAAA/u+JyWi3/t9qv16HDNCu5H5YF07GRGqNiLfjYkE7ISHEBQ3p3VY3uLtoplH/dK5W7qr5VUYWSI3FEhY8f6lJE3O3YiqObMegEgAAAA==",
+    "order": 8
+  },
+  {
+    "id": "114Nv0a6isuoiTip51CHp1wJmsbk0gT8s",
+    "name": "10-stage-wide.jpg",
+    "src": "photos/gallery/slide-182da2a0f3",
+    "widths": [
+      1280,
+      1920,
+      2560
+    ],
+    "width": 4272,
+    "height": 2848,
+    "lum": 77.4,
+    "alt": "The band mid-set, seen from the back of the room",
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADwAwCdASoYABAAPtFWpEuoJKOhsAgBABoJQBYdhFJNBBeejLzV5QfAAP6+cliKtdXgQ288CkqlLV1Hb6MweM6Qwvt8/+LRTBXK8IUw81FQbG2CXlSE6aKjlqLTc9ApDM3RTY0VwAA=",
+    "order": 9
   }
 ]
