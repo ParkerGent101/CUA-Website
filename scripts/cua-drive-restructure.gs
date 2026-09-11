@@ -109,13 +109,24 @@ function moveFolder(f, dest) {
   catch (e) { problems.push('Move folder "' + f.getName() + '" failed — ' + e.message + '  (likely owned by another account)'); }
 }
 
+/**
+ * Collect an iterator into an array before touching anything.
+ * Drive's iterators are paginated over a live query, so moving or trashing
+ * a file while walking the folder it sits in can skip later entries. Read
+ * the whole list first, then act on it.
+ */
+function drain(it) {
+  const out = [];
+  while (it.hasNext()) out.push(it.next());
+  return out;
+}
+
 /** Move every file out of `src` into `dest`. filterFn(file) → true to move it. */
 function moveFiles(src, dest, filterFn) {
   if (!src || !dest) return 0;
-  const it = src.getFiles();
+  const all = drain(src.getFiles());
   let n = 0, skipped = 0;
-  while (it.hasNext()) {
-    const f = it.next();
+  for (const f of all) {
     if (filterFn && !filterFn(f)) { skipped++; continue; }
     n++;
     if (!DRY_RUN) {
@@ -136,10 +147,9 @@ function moveFiles(src, dest, filterFn) {
  */
 function trashContents(src, what) {
   if (!src) return;
-  const it = src.getFiles();
+  const all = drain(src.getFiles());
   let n = 0, gb = 0;
-  while (it.hasNext()) {
-    const f = it.next();
+  for (const f of all) {
     let size = 0;
     try { size = f.getSize() / 1073741824; } catch (e) { size = 0; }
     n++; gb += size;
@@ -151,6 +161,7 @@ function trashContents(src, what) {
   }
   say('   → ' + n + ' ' + what + ', ' + gb.toFixed(2) + ' GB sent to Trash.');
   say('     Recoverable for 30 days. Storage is not freed until you empty the Trash.');
+  return gb;
 }
 
 function safeOwner(f) {
@@ -220,7 +231,8 @@ function restructure() {
   say('\n[3] 04 SONGS');
   const covers    = folder(ID.practiceVideos);
   const originals = folder(ID.originalMat);
-  if (TRASH_PRACTICE_VIDEOS) trashContents(covers, 'raw practice take(s)');
+  let trashedGb = 0;
+  if (TRASH_PRACTICE_VIDEOS) trashedGb = trashContents(covers, 'raw practice take(s)') || 0;
   moveFolder(covers, wSongs);    rename(covers,    'Covers');
   moveFolder(originals, wSongs); rename(originals, 'Originals');
 
@@ -264,7 +276,7 @@ function restructure() {
 
   // 8. Strays sitting loose in My Drive
   say('\n[8] Loose files in My Drive root');
-  sweepStray('Georges Setlist W_ Transitions.pdf', setLists);
+  sweepStray('Georges Setlist', setLists);
   sweepStray('TIPS.docx', promo);   // duplicate of the TIPS Doc — moved, not deleted
 
   // 9. What is left over
@@ -274,7 +286,7 @@ function restructure() {
 
   say('\n[10] Still to do by hand');
   say('   • Run transferOwnership() to hand your files to ' + BAND_ACCOUNT);
-  say('   • Empty the Trash to actually free the 4.75 GB of practice takes');
+  say('   • Empty the Trash to actually free the ' + trashedGb.toFixed(2) + ' GB of practice takes');
   say('   • Unzip "P&R Georges Show.zip" in 03 SHOWS/2026-06-25 Georges Majestic/Photos/');
   say('   • Pick 8–12 LANDSCAPE shots into 01 WEBSITE/Hero Photos, prefixed 01- 02- 03-…');
   say('   • Split 04 SONGS/Originals into one folder per song');
@@ -336,13 +348,29 @@ function transferOwnership() {
 
 // ────────────────────────────────────────────────────────────── detail ──
 
-function sweepStray(name, dest) {
+/**
+ * Move a loose file out of My Drive root.
+ * `hint` is matched loosely — exact names are brittle, since what Drive shows
+ * you is not always the stored name (slashes render as underscores, trailing
+ * spaces are invisible). Anything matching more than once is listed, not moved.
+ */
+function sweepStray(hint, dest) {
   if (!dest) return;
-  const it = DriveApp.getRootFolder().getFilesByName(name);
-  if (!it.hasNext()) { say('   not found  ' + name); return; }
-  const f = it.next();
-  say('   MOVE    ' + name + '  →  ' + dest.getName() + '/');
-  if (!DRY_RUN) { try { f.moveTo(dest); } catch (e) { problems.push('Stray "' + name + '" failed — ' + e.message); } }
+  const root = DriveApp.getRootFolder();
+  let hits = drain(root.getFilesByName(hint));
+  if (!hits.length) {
+    const safe = hint.replace(/["\\]/g, ' ').split('.')[0];
+    try { hits = drain(root.searchFiles('title contains "' + safe + '" and trashed = false')); }
+    catch (e) { problems.push('Search for "' + hint + '" failed — ' + e.message); }
+  }
+  if (!hits.length) { say('   not found  ' + hint); return; }
+  if (hits.length > 1) {
+    say('   AMBIGUOUS  "' + hint + '" matched ' + hits.length + ' files — moving none:');
+    hits.forEach(f => say('                 ' + f.getName()));
+    return;
+  }
+  say('   MOVE    ' + hits[0].getName() + '  →  ' + dest.getName() + '/');
+  if (!DRY_RUN) { try { hits[0].moveTo(dest); } catch (e) { problems.push('Stray "' + hint + '" failed — ' + e.message); } }
 }
 
 function reportEmpty(f) {
