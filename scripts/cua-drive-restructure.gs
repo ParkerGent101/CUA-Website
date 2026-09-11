@@ -26,7 +26,8 @@
 const DRY_RUN = true;   // ← flip to false to actually make the changes
 
 // Decisions from 11 Sep 2026:
-const BAND_ACCOUNT          = 'comingupaces1@gmail.com';  // ← CHECK THIS ADDRESS IS RIGHT
+const DRIVE_OWNER           = 'parkergent7@gmail.com';    // owns the band folder — run restructure() as this
+const BAND_ACCOUNT          = 'comingupaces1@gmail.com';  // receives ownership — does NOT run restructure()
 const TRASH_PRACTICE_VIDEOS = true;   // the 10 raw practice takes, 4.75 GB → Trash
 
 const ROOT_ID = '1Tu1cT82_bpGOziIeVskEd_4gDRdA6tNj';  // Comin Up Aces Material
@@ -155,6 +156,17 @@ function restructure() {
   say(DRY_RUN
     ? '=== DRY RUN — nothing will actually change ===\n'
     : '=== LIVE RUN — making changes ===\n');
+
+  // Wrong-account guard. Moving and renaming files you do not own fails per-file and
+  // half-finishes the job, so a live run from the wrong account stops here.
+  const me = Session.getEffectiveUser().getEmail();
+  if (me !== DRIVE_OWNER) {
+    say('!! Signed in as ' + me);
+    say('!! This needs to run as ' + DRIVE_OWNER + ', which owns the band folder.');
+    if (me === BAND_ACCOUNT) say('!! The band account receives ownership later; it does not run this.');
+    if (!DRY_RUN) { say('\nSTOPPED. Switch account, or change DRIVE_OWNER if this really is the owner.'); finish(); return; }
+    say('!! Dry run continues anyway so you can see the plan.\n');
+  }
 
   const root = folder(ROOT_ID);
   if (!root) { finish(); return; }
