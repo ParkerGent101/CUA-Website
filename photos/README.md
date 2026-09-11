@@ -9,6 +9,10 @@ Referenced by name from `index.html` and `epk.html`:
 - `hero.JPG` — kept as a source; the site's hero is the slideshow now (see below)
 - `press-1.JPG` … `press-7.JPG` — press photos; `press-1/2/3` appear in the EPK,
   and `press-2.webp` is the photo in the site's About section
+- `member-nate.JPG`, `member-parker.JPG`, `member-brandon.JPG`, `member-riley.JPG` —
+  the portraits on the band cards in `index.html`. The name after `member-` is what ties
+  the file to the card, so a new one has to reuse the existing name. These are capped at
+  900px wide instead of 1800px, because they only ever render in a ~300px card
 
 Replace a file keeping its **exact name and capitalisation** — Cloud Run is case-sensitive, so
 `hero.jpg` and `hero.JPG` are different files online — then run:

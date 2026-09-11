@@ -589,13 +589,46 @@ section + section::before {
   margin-top: 40px;
 }
 .member {
-  padding: 26px 22px;
   background: var(--ink-card);
   border: 1px solid var(--line-soft);
   border-top: 2px solid var(--gold-deep);
+  overflow: hidden;
   transition: border-top-color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 .member:hover { border-top-color: var(--gold); transform: translateY(-4px); }
+/* Same 4:5 crop as .about-photo, so the whole page frames its photos alike. */
+.member .portrait {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 4 / 5;
+  padding: 0 22px 12px;
+  background: var(--ink-2);
+  overflow: hidden;
+}
+.member .portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Faces sit high in every source frame; this crops off legs, not heads. */
+  object-position: center 26%;
+  transition: transform 0.6s var(--ease);
+}
+.member:hover .portrait img { transform: scale(1.04); }
+/* Fades the foot of the photo into the card so the name isn't on a hard edge.
+   Positioned, and last in the box, so it paints over the img. */
+.member .portrait::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 45%;
+  background: linear-gradient(to top, var(--ink-card), transparent);
+  pointer-events: none;
+}
+/* In normal flow, so it paints *under* the positioned img: what the card shows
+   while the photo loads, or for good if one ever 404s. */
 .member .initial {
   font-family: var(--display);
   font-weight: 700;
@@ -604,6 +637,7 @@ section + section::before {
   color: var(--gold);
   opacity: 0.28;
 }
+.member-text { padding: 16px 22px 26px; }
 .member .name {
   font-family: var(--display);
   font-weight: 600;
@@ -719,6 +753,11 @@ section + section::before {
   .show-row { grid-template-columns: 74px 1fr; }
   .show-row .btn { grid-column: 1 / -1; justify-self: start; margin-top: 6px; }
   .big-date { min-width: 72px; }
+}
+
+@media (max-width: 560px) {
+  /* Single column down here, and four 4:5 portraits is a lot of scrolling. */
+  .member .portrait { aspect-ratio: 1 / 1; }
 }
 
 @media (max-width: 420px) {

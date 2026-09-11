@@ -304,6 +304,12 @@ SLIDE_WIDTHS = [1280, 1920, 2560]
 WEBP_QUALITY = 82
 LQIP_WIDTH = 24
 
+# Ceilings for optimize-stills. The hero and press photos go full-bleed, so they
+# get the wide cap; the `member-*` portraits only ever render inside a ~300px
+# band card, where 1800px is several times more pixels than any screen asks for.
+STILL_MAX_WIDTH = 1800
+MEMBER_MAX_WIDTH = 900
+
 DRIVE_API = "https://www.googleapis.com/drive/v3/files"
 # Pillow can't open HEIC without pillow-heif, and iPhones shoot HEIC by default.
 HEIC_EXT = {".heic", ".heif"}
@@ -617,8 +623,9 @@ def cmd_optimize_stills(args):
     for p in srcs:
         im = ImageOps.exif_transpose(Image.open(p)).convert("RGB")
         w, h = im.size
-        if w > 1800:
-            im = im.resize((1800, round(h * 1800 / w)), Image.LANCZOS)
+        cap = MEMBER_MAX_WIDTH if p.stem.startswith("member-") else STILL_MAX_WIDTH
+        if w > cap:
+            im = im.resize((cap, round(h * cap / w)), Image.LANCZOS)
         out = p.with_suffix(".webp")
         before += p.stat().st_size
         if args.dry_run:

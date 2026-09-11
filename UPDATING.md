@@ -124,14 +124,18 @@ Useful to know:
 - `--dry-run` shows what would happen and writes nothing. `--from-local <folder>` syncs from a
   folder on this computer instead of Drive.
 
-## Replace a fixed photo (press kit, About section)
+## Replace a fixed photo (press kit, About section, band portraits)
 
 Those use fixed filenames rather than the rotating gallery. Drop the new `hero.JPG` /
-`press-1.JPG` / etc. into `photos/`, keeping the name and capitalisation exactly (Cloud Run is
-case-sensitive), then:
+`press-1.JPG` / `member-nate.JPG` / etc. into `photos/`, keeping the name and capitalisation
+exactly (Cloud Run is case-sensitive), then:
 
 ```bash
 python scripts/cua.py optimize-stills
 ```
 
 That writes the `.webp` files the pages actually reference. The `.JPG` originals stay as sources.
+
+The four `member-*.JPG` files are the photos on the band cards — one per person, named after them.
+Portrait shots with the face in the top half crop best: the card crops to 4:5 on desktop and to a
+square on phones, trimming from the bottom.

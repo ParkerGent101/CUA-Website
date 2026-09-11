@@ -27,7 +27,7 @@ Static website for Coming Up Aces, a classic rock band from NWA (Parker Gent on 
   and not part of the dark site's stylesheet
 - `app.js` — nav, hero slideshow, shows and videos rendering, scroll reveals
 - `style.css` — all site styling and the design tokens
-- `photos/` — fixed-name stills (`hero`, `press-N`) plus generated `og.jpg`
+- `photos/` — fixed-name stills (`hero`, `press-N`, `member-<firstname>`) plus generated `og.jpg`
 - `photos/gallery/` — generated, content-hashed WebP slides. Never hand-edit
 - `scripts/cua.py` — the tool that edits the JSON and syncs photos (see Content update workflow)
 - `UPDATING.md` — human-friendly update instructions
