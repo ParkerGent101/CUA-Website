@@ -7,8 +7,11 @@ Two different things live here.
 Referenced by name from `index.html` and `epk.html`:
 
 - `hero.JPG` — kept as a source; the site's hero is the slideshow now (see below)
-- `press-1.JPG` … `press-7.JPG` — press photos; `press-1/2/3` appear in the EPK,
-  and `press-2.webp` is the photo in the site's About section
+- `press-1.JPG` … `press-10.JPG` — press photos. The EPK shows the `.webp` of each and links
+  the `.JPG` next to it as the hi-res download, so **both** files have to stay. `press-2.webp`
+  is also the photo in the site's About section. `press-5/6/8/9/10` were promoted out of the
+  hero slideshow, so they are re-encodes of the 2560px gallery slides rather than camera
+  originals — drop the originals over those names and re-run `optimize-stills` to upgrade them
 - `member-nate.JPG`, `member-parker.JPG`, `member-brandon.JPG`, `member-riley.JPG` —
   the portraits on the band cards in `index.html`. The name after `member-` is what ties
   the file to the card, so a new one has to reuse the existing name. These are capped at

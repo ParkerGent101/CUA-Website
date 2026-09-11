@@ -139,3 +139,9 @@ That writes the `.webp` files the pages actually reference. The `.JPG` originals
 The four `member-*.JPG` files are the photos on the band cards — one per person, named after them.
 Portrait shots with the face in the top half crop best: the card crops to 4:5 on desktop and to a
 square on phones, trimming from the bottom.
+
+`press-1` … `press-10` are the press kit's photos. The EPK shows the `.webp` and links the `.JPG`
+beside it as the download a venue or promoter actually takes, so don't delete the `.JPG` files
+thinking they're only sources. Landscape band shots go in the top grid, portrait shots of one
+person in the bottom one; if you add or drop a photo, edit the matching tile in `epk.html` —
+the labels next to each one quote its real pixel size.

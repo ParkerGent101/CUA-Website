@@ -4,20 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coming Up Aces — Press Kit</title>
-<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, press photos and booking contact.">
+<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, high-resolution press photos, stage plot and input list, and booking contact.">
 
 <!--
   Photo setup:
-  - Put images in the /photos folder as press-1, press-2, press-3.
-  - Then run: python scripts/cua.py optimize-stills
-    That writes the .webp files this page actually references. Keep the
-    filenames and their capitalisation — Cloud Run is case-sensitive.
+  - Fixed-name stills live in /photos: hero, press-1 … press-10, member-<firstname>.
+    Replace a file keeping its exact name and capitalisation (Cloud Run is
+    case-sensitive), then run: python scripts/cua.py optimize-stills
+    That writes the .webp copies this page displays. The .JPG originals stay in
+    place because this page links them directly as the hi-res downloads.
+  - press-5, 6, 8, 9 and 10 were promoted out of the hero slideshow, so they are
+    re-encodes of the 2560px gallery slides rather than camera originals. Drop the
+    originals over those names and re-run optimize-stills to upgrade them; nothing
+    on this page has to change.
 
   This page is deliberately a LIGHT, print-oriented theme while the site is
   dark: it exists to be printed or emailed to a venue. Its darker gold
   (#8B6914 — style.css calls the same colour --gold-deep) is the correct
   accent on cream; the site's brighter #C49A2A would wash out here. Same
   palette, different half of it. It keeps its own styles for that reason.
+
+  The stage plot and input list are drafted from the documented line-up and from
+  the live photos in this repo. Parker: confirm the channel count, the monitor
+  mixes and who needs a vocal mic before this goes to a production manager.
 -->
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0806'/%3E%3Ctext x='16' y='25' font-size='26' text-anchor='middle' fill='%23C49A2A'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
@@ -25,7 +34,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Coming Up Aces">
 <meta property="og:title" content="Coming Up Aces — Press Kit">
-<meta property="og:description" content="Bio, line-up, press photos and booking contact.">
+<meta property="og:description" content="Bio, line-up, high-resolution press photos, stage plot and booking contact.">
 <meta property="og:url" content="https://comingupaces.net/epk">
 <meta property="og:image" content="https://comingupaces.net/photos/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +42,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Special+Elite&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,6 +54,8 @@
     --warm-mid: #e8e0d0;
     --muted: #6b6055;
     --border: rgba(139,105,20,0.25);
+    --line: rgba(26,22,18,0.12);
+    --display: 'Oswald', 'Arial Narrow', sans-serif;
   }
 
   body {
@@ -54,19 +65,21 @@
     line-height: 1.75;
   }
 
+  a { color: var(--gold); }
+
   /* ── PAGE WRAPPER ── */
   .page {
-    max-width: 820px;
+    max-width: 860px;
     margin: 0 auto;
-    padding: 60px 40px 80px;
+    padding: 56px 40px 80px;
   }
 
   /* ── HEADER ── */
   .header {
     text-align: center;
-    padding-bottom: 40px;
+    padding-bottom: 34px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 56px;
+    margin-bottom: 48px;
     position: relative;
   }
   .header::before {
@@ -75,7 +88,7 @@
     width: 80px;
     height: 3px;
     background: var(--gold);
-    margin: 0 auto 32px;
+    margin: 0 auto 30px;
   }
   .band-name {
     font-family: 'Special Elite', serif;
@@ -86,19 +99,18 @@
     margin-bottom: 12px;
   }
   .band-sub {
-    font-family: 'Lora', serif;
     font-size: 12px;
     letter-spacing: 8px;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
   .header-rule {
     display: flex;
     align-items: center;
     gap: 16px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
   .header-rule::before, .header-rule::after {
     content: '';
@@ -107,111 +119,253 @@
     height: 1px;
     background: var(--border);
   }
-  .spade {
-    color: var(--gold);
-    font-size: 18px;
-  }
+  .spade { color: var(--gold); font-size: 18px; }
   .kit-label {
     font-size: 12px;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--muted);
+    margin-bottom: 22px;
   }
+  /* Contact where a booker looks for it first — the top of page one. */
+  .header-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .header-contact a { text-decoration: none; border-bottom: 1px solid var(--border); }
+  .header-contact a:hover { border-bottom-color: var(--gold); }
+  .header-contact .sep { color: var(--border); }
+
+  .print-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 18px;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .print-btn:hover { background: var(--warm-mid); }
 
   /* ── SECTION ── */
-  .section {
-    margin-bottom: 52px;
-  }
+  .section { margin-bottom: 48px; }
   .section-label {
-    font-size: 10px;
+    font-family: var(--display);
+    font-size: 11px;
     letter-spacing: 6px;
     text-transform: uppercase;
     color: var(--gold);
-    font-family: 'Lora', serif;
     font-weight: 600;
-    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 14px;
   }
 
+  /* ── AT A GLANCE ── */
+  /* Separate bordered cards rather than a 1px-gap table: the fact count doesn't
+     divide evenly into the column count at every width, and a gap grid paints
+     the leftover cells as a solid block. */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .fact {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 15px 18px;
+  }
+  .fact dt {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .fact dd { font-size: 14px; line-height: 1.5; }
+  .fact dd a { text-decoration: none; border-bottom: 1px solid var(--border); }
+
   /* ── BIO ── */
-  .bio {
-    font-size: 16px;
-    line-height: 1.95;
+  .bio-lede {
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.6;
     color: var(--ink);
     border-left: 2px solid var(--gold);
-    padding-left: 24px;
+    padding-left: 22px;
+    margin-bottom: 24px;
   }
+  .bio p { font-size: 15.5px; line-height: 1.9; }
+  .bio p + p { margin-top: 16px; }
 
   /* ── BAND GRID ── */
   .band-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
     gap: 14px;
   }
   .member {
     background: var(--warm-mid);
     border: 1px solid var(--border);
     border-radius: 4px;
-    padding: 18px 20px;
+    overflow: hidden;
   }
+  /* 4:5 so the four portraits line up whatever their source framing was. */
+  .member-photo {
+    display: block;
+    width: 100%;
+    /* height:auto is load-bearing. The width/height attributes on the img are
+       presentational hints; width:100% overrides the width one but the height
+       hint survives, pinning the box at 1350px and making aspect-ratio inert. */
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center 26%;
+    background: var(--warm-mid);
+  }
+  .member-text { padding: 14px 18px 16px; }
   .member-name {
-    font-family: 'Lora', serif;
+    font-family: var(--display);
     font-weight: 600;
     font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--ink);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
-  .member-role {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
+  .member-role { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
   /* ── PHOTO GRID ── */
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+  .grid-heading {
+    font-family: var(--display);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
   }
-  .photo-slot {
-    background: var(--warm-mid);
-    border: 1px dashed var(--border);
-    border-radius: 4px;
-    height: 220px;
+  .grid-heading + .photo-grid { margin-bottom: 26px; }
+  .photo-grid { display: grid; gap: 12px; }
+  .photo-grid.wide { grid-template-columns: repeat(2, 1fr); }
+  .photo-grid.tall { grid-template-columns: repeat(4, 1fr); }
+
+  /* The whole tile is the download link — a booker should not have to hunt for
+     a separate icon. href points at the .JPG original, not the .webp on screen. */
+  .shot {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: var(--muted);
-  }
-  .photo-slot .slot-icon {
-    font-size: 26px;
-    opacity: 0.4;
-  }
-  .photo-slot .slot-text {
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.55;
-  }
-  .photo-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    background: var(--warm-mid);
+    border: 1px solid var(--border);
     border-radius: 4px;
-    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
   }
-  .photo-slot img:not([hidden]) ~ .slot-icon,
-  .photo-slot img:not([hidden]) ~ .slot-text {
-    display: none;
+  .shot:hover { border-color: var(--gold); }
+  /* height:auto, not 100%: the tile is a stretched grid item, so a 100%-height
+     image eats the whole tile and shoves the caption strip out of the clip. */
+  .shot img { display: block; width: 100%; height: auto; object-fit: cover; }
+  .photo-grid.wide .shot img { aspect-ratio: 3 / 2; }
+  .photo-grid.tall .shot img { aspect-ratio: 3 / 4; }
+  .shot-meta {
+    display: flex;
+    margin-top: auto;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 11px 9px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+  .shot-meta .dl {
+    font-family: var(--display);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
   }
 
-  /* ── SOCIALS ── */
-  .social-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+  /* ── STAGE PLOT ── */
+  .plot-frame {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px;
   }
+  .plot-frame svg { display: block; width: 100%; height: auto; }
+
+  .plot-cols {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 22px;
+    margin-top: 22px;
+  }
+  table.inputs {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.inputs caption,
+  .req h3 {
+    font-family: var(--display);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding-bottom: 8px;
+    font-weight: 600;
+  }
+  table.inputs th, table.inputs td {
+    text-align: left;
+    padding: 5px 8px 5px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.inputs th {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  table.inputs td:first-child { width: 30px; color: var(--muted); }
+  .req ul { list-style: none; font-size: 13px; line-height: 1.7; }
+  .req li { padding-left: 16px; position: relative; margin-bottom: 3px; }
+  .req li::before {
+    content: '♠';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 9px;
+    top: 2px;
+  }
+  .req + .req { margin-top: 20px; }
+
+  /* ── SOCIALS ── */
+  .social-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .social-btn {
     display: inline-flex;
     align-items: center;
@@ -220,20 +374,13 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     font-size: 13px;
-    font-family: 'Lora', serif;
     color: var(--ink);
     text-decoration: none;
     background: var(--cream);
     transition: background 0.15s;
   }
   .social-btn:hover { background: var(--warm-mid); }
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
   /* ── BOOKING ── */
   .booking-card {
@@ -241,48 +388,71 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 28px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
   }
   .booking-title {
     font-family: 'Special Elite', serif;
-    font-size: 20px;
+    font-size: 21px;
     color: var(--ink);
     margin-bottom: 6px;
   }
-  .booking-sub {
-    font-size: 14px;
-    color: var(--muted);
+  .booking-sub { font-size: 14px; color: var(--muted); }
+  .booking-mail {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 0.02em;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 2px solid var(--border);
+    word-break: break-word;
   }
+  .booking-mail:hover { border-bottom-color: var(--gold); }
 
   /* ── FOOTER ── */
   .footer {
     text-align: center;
-    padding-top: 40px;
+    padding-top: 36px;
     border-top: 1px solid var(--border);
     margin-top: 12px;
   }
-  .footer-spade {
-    font-size: 20px;
-    color: var(--gold);
-    margin-bottom: 10px;
-    display: block;
+  .footer-spade { font-size: 20px; color: var(--gold); margin-bottom: 10px; display: block; }
+  .footer-text { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+  .footer-text a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); }
+
+  @media (max-width: 720px) {
+    .plot-cols { grid-template-columns: 1fr; }
+    .photo-grid.tall { grid-template-columns: repeat(2, 1fr); }
+    /* Squeezed to phone width the plot's labels stop being readable. Let it
+       scroll inside its own frame instead — the page body still doesn't. */
+    .plot-frame { overflow-x: auto; }
+    .plot-frame svg { min-width: 560px; }
   }
-  .footer-text {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
+  @media (max-width: 600px) {
+    .page { padding: 40px 22px 60px; }
+    .band-name { font-size: 38px; letter-spacing: 3px; }
+    .photo-grid.wide { grid-template-columns: 1fr; }
   }
 
-  @media (max-width: 600px) {
-    .page { padding: 40px 24px 60px; }
-    .band-name { font-size: 40px; }
-    .photo-grid { grid-template-columns: 1fr; }
-    .booking-card { flex-direction: column; }
+  /* ── PRINT ──
+     This page's whole reason to exist is being printed or PDF'd and emailed to a
+     venue, so it gets a real print sheet: white ground, no interactive chrome,
+     and no section split across a page break. */
+  @media print {
+    @page { margin: 14mm; }
+    body { background: #fff; font-size: 11pt; line-height: 1.55; }
+    .page { max-width: none; padding: 0; }
+    .print-btn, .social-row { display: none; }
+    .section { margin-bottom: 26px; page-break-inside: avoid; }
+    .header { margin-bottom: 26px; padding-bottom: 20px; }
+    .band-name { font-size: 34pt; }
+    .fact, .member, .booking-card, .shot, .plot-frame { background: #fff; }
+    .photo-grid.tall { grid-template-columns: repeat(4, 1fr); }
+    .shot-meta .dl { display: none; }
+    a { color: var(--ink); }
+    /* The stage plot is the page a production manager actually prints. */
+    #stage-plot { page-break-before: always; }
   }
 </style>
 </head>
@@ -295,12 +465,73 @@
     <div class="band-sub">Northwest Arkansas &nbsp;·&nbsp; Classic Rock</div>
     <div class="header-rule"><span class="spade">♠</span></div>
     <div class="kit-label">Press Kit &amp; Booking Information</div>
+    <div class="header-contact">
+      <a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a>
+      <span class="sep">|</span>
+      <a href="https://comingupaces.net">comingupaces.net</a>
+      <span class="sep">|</span>
+      <span>Northwest Arkansas</span>
+    </div>
+    <button class="print-btn" type="button" onclick="window.print()">Print / Save as PDF</button>
   </header>
+
+  <!-- AT A GLANCE -->
+  <section class="section">
+    <div class="section-label">At a Glance</div>
+    <dl class="facts">
+      <div class="fact">
+        <dt>Based</dt>
+        <dd>Northwest Arkansas</dd>
+      </div>
+      <div class="fact">
+        <dt>Line-up</dt>
+        <dd>Four piece — guitars, bass, drums, keys</dd>
+      </div>
+      <div class="fact">
+        <dt>Sound</dt>
+        <dd>Classic rock, Southern rock, heartland rock</dd>
+      </div>
+      <div class="fact">
+        <dt>In the vein of</dt>
+        <dd>Lynyrd Skynyrd, Tom Petty, 90s grunge</dd>
+      </div>
+      <div class="fact">
+        <dt>Plays</dt>
+        <dd>Bars, festivals and private events across Arkansas and Oklahoma</dd>
+      </div>
+      <div class="fact">
+        <dt>Booking</dt>
+        <dd><a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a></dd>
+      </div>
+      <div class="fact">
+        <dt>Tech</dt>
+        <dd><a href="#stage-plot">Stage plot &amp; input list</a> — 13 channels, 3 monitor mixes</dd>
+      </div>
+    </dl>
+  </section>
 
   <!-- BIO -->
   <section class="section">
-    <div class="section-label">About</div>
-    <p class="bio">Hailing from the hills of Northwest Arkansas, Coming Up Aces is a four-piece classic rock band forged from friendship and a shared love of the classics. Drawing deep from the well of Southern rock legends like Lynyrd Skynyrd and the heartland storytelling of Tom Petty, then running it through the raw, unfiltered energy of grunge, Coming Up Aces has carved out a sound that feels both timeless and alive.</p>
+    <div class="section-label">About the Band</div>
+    <p class="bio-lede">Four friends from the hills of Northwest Arkansas, playing rock
+      the way it was meant to be played — loud, honest, and live.</p>
+    <div class="bio">
+      <p>Coming Up Aces is a four-piece classic rock band forged from friendship and a
+        shared love of the classics. Drawing deep from the well of Southern rock legends
+        like Lynyrd Skynyrd and the heartland storytelling of Tom Petty, then running it
+        through the raw, unfiltered energy of grunge, the band has carved out a sound that
+        feels both timeless and alive.</p>
+      <p>Nate Poplin fronts the band on lead vocals and rhythm guitar. Parker Gent covers
+        lead guitar, keys and harmonica, Brandon Hargis holds the bottom end on bass, and
+        Riley Gent drives the whole thing from behind the kit. Two guitars, keys and harmonica
+        over a rhythm section that leans into the pocket — it is a live band first, built to fill
+        a room rather than a studio.</p>
+      <p>You'll find Coming Up Aces in bars, on festival stages and anywhere across Arkansas
+        and Oklahoma — wherever there's a room that wants a real rock band.</p>
+    </div>
+    <p class="note"><strong>Short version, for listings:</strong> Coming Up Aces is a four-piece
+      classic rock band from Northwest Arkansas — Southern rock roots, heartland storytelling
+      and grunge energy, played loud and live.</p>
   </section>
 
   <!-- BAND -->
@@ -308,20 +539,32 @@
     <div class="section-label">The Band</div>
     <div class="band-grid">
       <div class="member">
-        <div class="member-name">Nate Poplin</div>
-        <div class="member-role">Lead vocals &amp; rhythm guitar</div>
+        <img class="member-photo" src="photos/member-nate.webp" alt="Nate Poplin singing live" loading="lazy" decoding="async" width="900" height="1200">
+        <div class="member-text">
+          <div class="member-name">Nate Poplin</div>
+          <div class="member-role">Lead vocals &amp; rhythm guitar</div>
+        </div>
       </div>
       <div class="member">
-        <div class="member-name">Parker Gent</div>
-        <div class="member-role">Lead guitar, keys, harmonica &amp; backup vocals</div>
+        <img class="member-photo" src="photos/member-parker.webp" alt="Parker Gent playing lead guitar" loading="lazy" decoding="async" width="900" height="1350">
+        <div class="member-text">
+          <div class="member-name">Parker Gent</div>
+          <div class="member-role">Lead guitar, keys, harmonica &amp; backup vocals</div>
+        </div>
       </div>
       <div class="member">
-        <div class="member-name">Brandon Hargis</div>
-        <div class="member-role">Bass guitar</div>
+        <img class="member-photo" src="photos/member-brandon.webp" alt="Brandon Hargis on bass in front of the band banner" loading="lazy" decoding="async" width="900" height="1350">
+        <div class="member-text">
+          <div class="member-name">Brandon Hargis</div>
+          <div class="member-role">Bass guitar</div>
+        </div>
       </div>
       <div class="member">
-        <div class="member-name">Riley Gent</div>
-        <div class="member-role">Drums</div>
+        <img class="member-photo" src="photos/member-riley.webp" alt="Riley Gent behind the drum kit" loading="lazy" decoding="async" width="900" height="1350">
+        <div class="member-text">
+          <div class="member-name">Riley Gent</div>
+          <div class="member-role">Drums</div>
+        </div>
       </div>
     </div>
   </section>
@@ -329,41 +572,225 @@
   <!-- PRESS PHOTOS -->
   <section class="section">
     <div class="section-label">Press Photos</div>
-    <!--
-      To update photos, replace the files in /photos:
-      press-1.JPG, press-2.JPG, press-3.JPG
-    -->
-    <div class="photo-grid">
-      <div class="photo-slot">
-        <img src="photos/press-1.webp" alt="Coming Up Aces press photo 1" loading="lazy" decoding="async" onerror="this.hidden=true">
-        <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-1.webp</span>
-      </div>
-      <div class="photo-slot">
-        <img src="photos/press-2.webp" alt="Coming Up Aces press photo 2" loading="lazy" decoding="async" onerror="this.hidden=true">
-        <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-2.webp</span>
-      </div>
-      <div class="photo-slot">
-        <img src="photos/press-3.webp" alt="Coming Up Aces press photo 3" loading="lazy" decoding="async" onerror="this.hidden=true">
-        <span class="slot-icon">📷</span>
-        <span class="slot-text">photos/press-3.webp</span>
+
+    <div class="grid-heading">Band shots — click any photo for the full-resolution file</div>
+    <div class="photo-grid wide">
+      <a class="shot" href="photos/press-5.JPG" download>
+        <img src="photos/press-5.webp" alt="The full band on stage beneath the George's Majestic sign" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Full band — George's Majestic</span><span class="dl">JPG · 2560×1707</span></span>
+      </a>
+      <a class="shot" href="photos/press-6.JPG" download>
+        <img src="photos/press-6.webp" alt="Wide view of the stage with the George's Majestic sign overhead" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Wide stage</span><span class="dl">JPG · 2560×1707</span></span>
+      </a>
+      <a class="shot" href="photos/press-8.JPG" download>
+        <img src="photos/press-8.webp" alt="Three of the band spread across the stage under purple light" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Mid-set</span><span class="dl">JPG · 2560×1707</span></span>
+      </a>
+      <a class="shot" href="photos/press-9.JPG" download>
+        <img src="photos/press-9.webp" alt="Singing into the mic in front of the Coming Up Aces banner" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>In front of the banner</span><span class="dl">JPG · 2560×1707</span></span>
+      </a>
+      <a class="shot" href="photos/press-10.JPG" download>
+        <img src="photos/press-10.webp" alt="Red electric keyboard in the foreground, the rest of the band playing behind" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Keys</span><span class="dl">JPG · 2560×1707</span></span>
+      </a>
+      <a class="shot" href="photos/hero.JPG" download>
+        <img src="photos/hero.webp" alt="Coming Up Aces playing a full set under stage lights" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Full set</span><span class="dl">JPG · 2208×1562</span></span>
+      </a>
+    </div>
+
+    <div class="grid-heading">Individual shots</div>
+    <div class="photo-grid tall">
+      <a class="shot" href="photos/press-1.JPG" download>
+        <img src="photos/press-1.webp" alt="Nate Poplin at the mic under red stage light" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Nate — vocals</span><span class="dl">1628×2208</span></span>
+      </a>
+      <a class="shot" href="photos/press-4.JPG" download>
+        <img src="photos/press-4.webp" alt="Parker Gent playing lead guitar under blue light" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Parker — lead guitar</span><span class="dl">909×1852</span></span>
+      </a>
+      <a class="shot" href="photos/press-3.JPG" download>
+        <img src="photos/press-3.webp" alt="Brandon Hargis playing bass in a wide-brim hat" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Brandon — bass</span><span class="dl">1658×2208</span></span>
+      </a>
+      <a class="shot" href="photos/press-2.JPG" download>
+        <img src="photos/press-2.webp" alt="Riley Gent behind the kit under purple light" loading="lazy" decoding="async">
+        <span class="shot-meta"><span>Riley — drums</span><span class="dl">1656×2208</span></span>
+      </a>
+    </div>
+
+    <p class="note">All photos are cleared for use in promotion of Coming Up Aces performances —
+      posters, listings, social posts and press. Please credit <strong>Coming Up Aces</strong> where
+      a credit line is used. Need a different crop, an orientation that isn't here, or a photo
+      without the watermarked backdrop? Email us and we'll send it over.</p>
+  </section>
+
+  <!-- STAGE PLOT -->
+  <section class="section" id="stage-plot">
+    <div class="section-label">Stage Plot &amp; Input List</div>
+
+    <div class="plot-frame">
+      <svg viewBox="0 0 780 470" role="img" aria-labelledby="plot-title plot-desc">
+        <title id="plot-title">Coming Up Aces stage plot</title>
+        <desc id="plot-desc">Audience view. Drums upstage centre on a riser; lead guitar, keys
+          and a vocal mic at stage right; lead vocals and rhythm guitar downstage centre; bass at
+          stage left. Three monitor wedges along the downstage edge and three power drops.</desc>
+
+        <style>
+          .stage    { fill: #faf7f1; stroke: #8B6914; stroke-width: 2; }
+          .box      { fill: #e8e0d0; stroke: #8B6914; stroke-width: 1.4; }
+          .gear     { fill: #fff; stroke: #6b6055; stroke-width: 1.2; }
+          .wedge    { fill: #e8e0d0; stroke: #6b6055; stroke-width: 1.2; }
+          .who      { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 15px;
+                      font-weight: 600; letter-spacing: 0.06em; fill: #1a1612; }
+          .what     { font-family: 'Lora', Georgia, serif; font-size: 11.5px; fill: #6b6055; }
+          .tag      { font-family: 'Lora', Georgia, serif; font-size: 10.5px; fill: #6b6055; }
+          .edge     { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 11px;
+                      letter-spacing: 0.26em; fill: #6b6055; }
+          .aud      { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 13px;
+                      letter-spacing: 0.34em; fill: #8B6914; }
+          .mic circle { fill: #fff; stroke: #8B6914; stroke-width: 1.6; }
+          .pwr      { fill: #8B6914; }
+        </style>
+
+        <!-- stage floor -->
+        <rect class="stage" x="16" y="34" width="748" height="368" rx="3"/>
+        <text class="edge" x="30" y="26">STAGE RIGHT (AUDIENCE LEFT)</text>
+        <text class="edge" x="390" y="26" text-anchor="middle">UPSTAGE</text>
+        <text class="edge" x="750" y="26" text-anchor="end">STAGE LEFT (AUDIENCE RIGHT)</text>
+
+        <!-- DRUMS — upstage centre, on a riser -->
+        <rect class="box" x="296" y="56" width="188" height="118" rx="3"/>
+        <circle class="gear" cx="360" cy="118" r="26"/>
+        <circle class="gear" cx="408" cy="96" r="13"/>
+        <circle class="gear" cx="436" cy="96" r="13"/>
+        <circle class="gear" cx="452" cy="128" r="17"/>
+        <text class="who" x="390" y="80" text-anchor="middle">RILEY</text>
+        <text class="what" x="390" y="166" text-anchor="middle">Drums — riser if available</text>
+
+        <!-- PARKER — stage right -->
+        <rect class="box" x="46" y="184" width="212" height="132" rx="3"/>
+        <text class="who" x="62" y="208">PARKER</text>
+        <text class="what" x="62" y="226">Lead guitar · keys · harp</text>
+        <rect class="gear" x="62" y="240" width="86" height="30" rx="2"/>
+        <text class="tag" x="105" y="259" text-anchor="middle">Gtr amp</text>
+        <rect class="gear" x="158" y="240" width="84" height="30" rx="2"/>
+        <text class="tag" x="200" y="259" text-anchor="middle">Keys (DI)</text>
+        <g class="mic"><circle cx="78" cy="292" r="9"/></g>
+        <text class="tag" x="94" y="296">Vocal + harmonica mic</text>
+
+        <!-- NATE — downstage centre -->
+        <rect class="box" x="292" y="198" width="196" height="118" rx="3"/>
+        <text class="who" x="390" y="222" text-anchor="middle">NATE</text>
+        <text class="what" x="390" y="240" text-anchor="middle">Lead vocals · rhythm guitar</text>
+        <rect class="gear" x="326" y="252" width="88" height="30" rx="2"/>
+        <text class="tag" x="370" y="271" text-anchor="middle">Gtr amp</text>
+        <g class="mic"><circle cx="440" cy="267" r="9"/></g>
+        <text class="tag" x="390" y="304" text-anchor="middle">Lead vocal mic — boom stand</text>
+
+        <!-- BRANDON — stage left -->
+        <rect class="box" x="522" y="184" width="212" height="132" rx="3"/>
+        <text class="who" x="718" y="208" text-anchor="end">BRANDON</text>
+        <text class="what" x="718" y="226" text-anchor="end">Bass</text>
+        <rect class="gear" x="616" y="240" width="102" height="30" rx="2"/>
+        <text class="tag" x="667" y="259" text-anchor="middle">Bass amp + DI</text>
+        <text class="tag" x="718" y="296" text-anchor="end">DI to FOH from the bass rig</text>
+
+        <!-- monitors along the downstage edge -->
+        <path class="wedge" d="M96 342 h96 l-12 26 h-72 z"/>
+        <path class="wedge" d="M342 342 h96 l-12 26 h-72 z"/>
+        <path class="wedge" d="M588 342 h96 l-12 26 h-72 z"/>
+        <text class="tag" x="144" y="386" text-anchor="middle">Mix 1 — Parker</text>
+        <text class="tag" x="390" y="386" text-anchor="middle">Mix 2 — Nate</text>
+        <text class="tag" x="636" y="386" text-anchor="middle">Mix 3 — Brandon / drums</text>
+
+        <!-- power drops -->
+        <circle class="pwr" cx="32" cy="168" r="5"/>
+        <circle class="pwr" cx="390" cy="46" r="5"/>
+        <circle class="pwr" cx="748" cy="168" r="5"/>
+        <text class="tag" x="16" y="424">● 110V power drop — one stage right, one upstage centre, one stage left</text>
+
+        <text class="aud" x="390" y="452" text-anchor="middle">A U D I E N C E</text>
+      </svg>
+    </div>
+
+    <div class="plot-cols">
+      <table class="inputs">
+        <caption>Input list — 13 channels</caption>
+        <thead>
+          <tr><th>#</th><th>Source</th><th>Provided by</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Kick</td><td>House</td></tr>
+          <tr><td>2</td><td>Snare</td><td>House</td></tr>
+          <tr><td>3</td><td>Rack tom</td><td>House</td></tr>
+          <tr><td>4</td><td>Floor tom</td><td>House</td></tr>
+          <tr><td>5</td><td>Overhead L</td><td>House</td></tr>
+          <tr><td>6</td><td>Overhead R</td><td>House</td></tr>
+          <tr><td>7</td><td>Bass — DI</td><td>Band</td></tr>
+          <tr><td>8</td><td>Guitar SR (Parker) — amp mic</td><td>House</td></tr>
+          <tr><td>9</td><td>Guitar C (Nate) — amp mic</td><td>House</td></tr>
+          <tr><td>10</td><td>Keys L — DI</td><td>Band</td></tr>
+          <tr><td>11</td><td>Keys R — DI</td><td>Band</td></tr>
+          <tr><td>12</td><td>Lead vocal — Nate, centre</td><td>House</td></tr>
+          <tr><td>13</td><td>Vocal / harmonica — Parker, SR</td><td>House</td></tr>
+          <tr><td colspan="3" style="color:#6b6055">A further vocal mic can be added on request.</td></tr>
+        </tbody>
+      </table>
+
+      <div>
+        <div class="req">
+          <h3>House to provide</h3>
+          <ul>
+            <li>FOH PA sized for the room, and an engineer</li>
+            <li>Three monitor mixes on wedges</li>
+            <li>Drum and vocal microphones with stands</li>
+            <li>Two boom stands (lead vocal, stage right vocal)</li>
+            <li>Three 110V power drops — see the plot</li>
+          </ul>
+        </div>
+        <div class="req">
+          <h3>Band brings</h3>
+          <ul>
+            <li>Full backline — guitar amps, bass amp, drum kit, keyboard and stand</li>
+            <li>All instrument cabling, pedalboards and DI boxes for bass and keys</li>
+            <li>Coming Up Aces backdrop banner, where there's somewhere to hang it</li>
+          </ul>
+        </div>
+        <div class="req">
+          <h3>Logistics</h3>
+          <ul>
+            <li>Four band members</li>
+            <li>Load-in and line check: 60 minutes before doors is comfortable</li>
+            <li>Smaller rooms: happy to go with a reduced kit and fewer channels</li>
+          </ul>
+        </div>
       </div>
     </div>
+
+    <p class="note">This plot covers the standard four-piece setup. We'll adapt to whatever the
+      room needs — email <a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a> and
+      we'll work to your stage and your desk. A printable copy of this page is one click away
+      with the button at the top.</p>
   </section>
 
   <!-- FOLLOW -->
   <section class="section">
-    <div class="section-label">Follow</div>
+    <div class="section-label">Listen &amp; Follow</div>
     <div class="social-row">
-      <a class="social-btn" href="https://www.instagram.com/comingupaces_/" target="_blank">
+      <a class="social-btn" href="https://www.instagram.com/comingupaces_/" target="_blank" rel="noopener">
         <span class="dot" style="background:#C13584;"></span> Instagram
       </a>
-      <a class="social-btn" href="https://www.facebook.com/profile.php?id=61589341584705" target="_blank">
+      <a class="social-btn" href="https://www.facebook.com/profile.php?id=61589341584705" target="_blank" rel="noopener">
         <span class="dot" style="background:#1877F2;"></span> Facebook
       </a>
-      <a class="social-btn" href="https://www.tiktok.com/@coming_up_aces" target="_blank">
+      <a class="social-btn" href="https://www.tiktok.com/@coming_up_aces" target="_blank" rel="noopener">
         <span class="dot" style="background:#010101;"></span> TikTok
+      </a>
+      <a class="social-btn" href="https://comingupaces.net#shows" target="_blank" rel="noopener">
+        <span class="dot" style="background:#8B6914;"></span> Upcoming shows
       </a>
     </div>
   </section>
@@ -372,17 +799,19 @@
   <section class="section">
     <div class="section-label">Booking</div>
     <div class="booking-card">
-      <div>
-        <div class="booking-title">Book Coming Up Aces</div>
-        <div class="booking-sub">For show inquiries, please contact comingupaces1@gmail.com.</div>
-      </div>
+      <div class="booking-title">Book Coming Up Aces</div>
+      <div class="booking-sub">Bars, festivals and private events — anywhere in Arkansas,
+        Oklahoma and around. Tell us the date, the room and the set length, and we'll come back
+        to you quickly.</div>
+      <a class="booking-mail" href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <span class="footer-spade">♠</span>
-    <div class="footer-text">Coming Up Aces &nbsp;·&nbsp; Northwest Arkansas</div>
+    <div class="footer-text">Coming Up Aces &nbsp;·&nbsp; Northwest Arkansas &nbsp;·&nbsp;
+      <a href="https://comingupaces.net">comingupaces.net</a></div>
   </footer>
 
 </div>
