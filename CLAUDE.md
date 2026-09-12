@@ -24,9 +24,12 @@ Static website for Coming Up Aces, a classic rock band from NWA (Parker Gent on 
   except for the `alt` text, which the sync deliberately preserves
 - `index.html` — main public site. Links style.css and app.js; carries no inline CSS or JS
 - `epk.html` — electronic press kit: bio, line-up with photos, press photos that link their
-  hi-res `.JPG` originals, an SVG stage plot with an input list, and booking. Intentionally a
-  LIGHT print-oriented theme, self-styled, with its own `@media print` sheet — it links
-  neither `style.css` nor `app.js`, so edits to those never reach it
+  hi-res `.JPG` originals, and booking. Intentionally a LIGHT print-oriented theme, self-styled,
+  with its own `@media print` sheet — it links neither `style.css` nor `app.js`, so edits to
+  those never reach it. **No stage plot, on purpose:** one shipped inline on 2026-09-11 and was
+  pulled the same day — it is being built separately and plugged in later, so don't re-add an
+  inline copy. The confirmed layout and what's still open are in the wiki,
+  `wiki/projects/coming-up-aces.md` → "Stage plot (deferred)"
 - `app.js` — nav, hero slideshow, shows and videos rendering, scroll reveals
 - `style.css` — all site styling and the design tokens
 - `photos/` — fixed-name stills (`hero`, `press-1`…`press-10`, `member-<firstname>`) plus

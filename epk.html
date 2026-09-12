@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coming Up Aces — Press Kit</title>
-<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, high-resolution press photos, stage plot and input list, and booking contact.">
+<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, high-resolution press photos and booking contact.">
 
 <!--
   Photo setup:
@@ -24,9 +24,9 @@
   accent on cream; the site's brighter #C49A2A would wash out here. Same
   palette, different half of it. It keeps its own styles for that reason.
 
-  The stage plot and input list are drafted from the documented line-up and from
-  the live photos in this repo. Parker: confirm the channel count, the monitor
-  mixes and who needs a vocal mic before this goes to a production manager.
+  There is no stage plot here on purpose. A draft one shipped on 2026-09-11 and was
+  pulled the same day: it is being built separately and plugged in later, so don't
+  re-add an inline copy. See wiki/projects/coming-up-aces.md, "Stage plot (deferred)".
 -->
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0806'/%3E%3Ctext x='16' y='25' font-size='26' text-anchor='middle' fill='%23C49A2A'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
@@ -34,7 +34,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Coming Up Aces">
 <meta property="og:title" content="Coming Up Aces — Press Kit">
-<meta property="og:description" content="Bio, line-up, high-resolution press photos, stage plot and booking contact.">
+<meta property="og:description" content="Bio, line-up, high-resolution press photos and booking contact.">
 <meta property="og:url" content="https://comingupaces.net/epk">
 <meta property="og:image" content="https://comingupaces.net/photos/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -306,64 +306,6 @@
     white-space: nowrap;
   }
 
-  /* ── STAGE PLOT ── */
-  .plot-frame {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 14px;
-  }
-  .plot-frame svg { display: block; width: 100%; height: auto; }
-
-  .plot-cols {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: 22px;
-    margin-top: 22px;
-  }
-  table.inputs {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  table.inputs caption,
-  .req h3 {
-    font-family: var(--display);
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: left;
-    padding-bottom: 8px;
-    font-weight: 600;
-  }
-  table.inputs th, table.inputs td {
-    text-align: left;
-    padding: 5px 8px 5px 0;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
-  table.inputs th {
-    font-family: var(--display);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 600;
-  }
-  table.inputs td:first-child { width: 30px; color: var(--muted); }
-  .req ul { list-style: none; font-size: 13px; line-height: 1.7; }
-  .req li { padding-left: 16px; position: relative; margin-bottom: 3px; }
-  .req li::before {
-    content: '♠';
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-    font-size: 9px;
-    top: 2px;
-  }
-  .req + .req { margin-top: 20px; }
-
   /* ── SOCIALS ── */
   .social-row { display: flex; flex-wrap: wrap; gap: 12px; }
   .social-btn {
@@ -422,12 +364,7 @@
   .footer-text a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); }
 
   @media (max-width: 720px) {
-    .plot-cols { grid-template-columns: 1fr; }
     .photo-grid.tall { grid-template-columns: repeat(2, 1fr); }
-    /* Squeezed to phone width the plot's labels stop being readable. Let it
-       scroll inside its own frame instead — the page body still doesn't. */
-    .plot-frame { overflow-x: auto; }
-    .plot-frame svg { min-width: 560px; }
   }
   @media (max-width: 600px) {
     .page { padding: 40px 22px 60px; }
@@ -447,12 +384,10 @@
     .section { margin-bottom: 26px; page-break-inside: avoid; }
     .header { margin-bottom: 26px; padding-bottom: 20px; }
     .band-name { font-size: 34pt; }
-    .fact, .member, .booking-card, .shot, .plot-frame { background: #fff; }
+    .fact, .member, .booking-card, .shot { background: #fff; }
     .photo-grid.tall { grid-template-columns: repeat(4, 1fr); }
     .shot-meta .dl { display: none; }
     a { color: var(--ink); }
-    /* The stage plot is the page a production manager actually prints. */
-    #stage-plot { page-break-before: always; }
   }
 </style>
 </head>
@@ -486,10 +421,6 @@
       <div class="fact">
         <dt>Booking</dt>
         <dd><a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a></dd>
-      </div>
-      <div class="fact">
-        <dt>Tech</dt>
-        <dd><a href="#stage-plot">Stage plot &amp; input list</a> — 13 channels, 3 monitor mixes</dd>
       </div>
     </dl>
   </section>
@@ -609,155 +540,6 @@
       posters, listings, social posts and press. Please credit <strong>Coming Up Aces</strong> where
       a credit line is used. Need a different crop, an orientation that isn't here, or a photo
       without the watermarked backdrop? Email us and we'll send it over.</p>
-  </section>
-
-  <!-- STAGE PLOT -->
-  <section class="section" id="stage-plot">
-    <div class="section-label">Stage Plot &amp; Input List</div>
-
-    <div class="plot-frame">
-      <svg viewBox="0 0 780 470" role="img" aria-labelledby="plot-title plot-desc">
-        <title id="plot-title">Coming Up Aces stage plot</title>
-        <desc id="plot-desc">Audience view. Drums upstage centre on a riser; lead guitar, keys
-          and a vocal mic at stage right; lead vocals and rhythm guitar downstage centre; bass at
-          stage left. Three monitor wedges along the downstage edge and three power drops.</desc>
-
-        <style>
-          .stage    { fill: #faf7f1; stroke: #8B6914; stroke-width: 2; }
-          .box      { fill: #e8e0d0; stroke: #8B6914; stroke-width: 1.4; }
-          .gear     { fill: #fff; stroke: #6b6055; stroke-width: 1.2; }
-          .wedge    { fill: #e8e0d0; stroke: #6b6055; stroke-width: 1.2; }
-          .who      { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 15px;
-                      font-weight: 600; letter-spacing: 0.06em; fill: #1a1612; }
-          .what     { font-family: 'Lora', Georgia, serif; font-size: 11.5px; fill: #6b6055; }
-          .tag      { font-family: 'Lora', Georgia, serif; font-size: 10.5px; fill: #6b6055; }
-          .edge     { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 11px;
-                      letter-spacing: 0.26em; fill: #6b6055; }
-          .aud      { font-family: 'Oswald', 'Arial Narrow', sans-serif; font-size: 13px;
-                      letter-spacing: 0.34em; fill: #8B6914; }
-          .mic circle { fill: #fff; stroke: #8B6914; stroke-width: 1.6; }
-          .pwr      { fill: #8B6914; }
-        </style>
-
-        <!-- stage floor -->
-        <rect class="stage" x="16" y="34" width="748" height="368" rx="3"/>
-        <text class="edge" x="30" y="26">STAGE RIGHT (AUDIENCE LEFT)</text>
-        <text class="edge" x="390" y="26" text-anchor="middle">UPSTAGE</text>
-        <text class="edge" x="750" y="26" text-anchor="end">STAGE LEFT (AUDIENCE RIGHT)</text>
-
-        <!-- DRUMS — upstage centre, on a riser -->
-        <rect class="box" x="296" y="56" width="188" height="118" rx="3"/>
-        <circle class="gear" cx="360" cy="118" r="26"/>
-        <circle class="gear" cx="408" cy="96" r="13"/>
-        <circle class="gear" cx="436" cy="96" r="13"/>
-        <circle class="gear" cx="452" cy="128" r="17"/>
-        <text class="who" x="390" y="80" text-anchor="middle">RILEY</text>
-        <text class="what" x="390" y="166" text-anchor="middle">Drums — riser if available</text>
-
-        <!-- PARKER — stage right -->
-        <rect class="box" x="46" y="184" width="212" height="132" rx="3"/>
-        <text class="who" x="62" y="208">PARKER</text>
-        <text class="what" x="62" y="226">Lead guitar · keys · harp</text>
-        <rect class="gear" x="62" y="240" width="86" height="30" rx="2"/>
-        <text class="tag" x="105" y="259" text-anchor="middle">Gtr amp</text>
-        <rect class="gear" x="158" y="240" width="84" height="30" rx="2"/>
-        <text class="tag" x="200" y="259" text-anchor="middle">Keys (DI)</text>
-        <g class="mic"><circle cx="78" cy="292" r="9"/></g>
-        <text class="tag" x="94" y="296">Vocal + harmonica mic</text>
-
-        <!-- NATE — downstage centre -->
-        <rect class="box" x="292" y="198" width="196" height="118" rx="3"/>
-        <text class="who" x="390" y="222" text-anchor="middle">NATE</text>
-        <text class="what" x="390" y="240" text-anchor="middle">Lead vocals · rhythm guitar</text>
-        <rect class="gear" x="326" y="252" width="88" height="30" rx="2"/>
-        <text class="tag" x="370" y="271" text-anchor="middle">Gtr amp</text>
-        <g class="mic"><circle cx="440" cy="267" r="9"/></g>
-        <text class="tag" x="390" y="304" text-anchor="middle">Lead vocal mic — boom stand</text>
-
-        <!-- BRANDON — stage left -->
-        <rect class="box" x="522" y="184" width="212" height="132" rx="3"/>
-        <text class="who" x="718" y="208" text-anchor="end">BRANDON</text>
-        <text class="what" x="718" y="226" text-anchor="end">Bass</text>
-        <rect class="gear" x="616" y="240" width="102" height="30" rx="2"/>
-        <text class="tag" x="667" y="259" text-anchor="middle">Bass amp + DI</text>
-        <text class="tag" x="718" y="296" text-anchor="end">No vocal mic — DI to FOH</text>
-
-        <!-- monitors along the downstage edge -->
-        <path class="wedge" d="M96 342 h96 l-12 26 h-72 z"/>
-        <path class="wedge" d="M342 342 h96 l-12 26 h-72 z"/>
-        <path class="wedge" d="M588 342 h96 l-12 26 h-72 z"/>
-        <text class="tag" x="144" y="386" text-anchor="middle">Mix 1 — Parker</text>
-        <text class="tag" x="390" y="386" text-anchor="middle">Mix 2 — Nate</text>
-        <text class="tag" x="636" y="386" text-anchor="middle">Mix 3 — Brandon / drums</text>
-
-        <!-- power drops -->
-        <circle class="pwr" cx="32" cy="168" r="5"/>
-        <circle class="pwr" cx="390" cy="46" r="5"/>
-        <circle class="pwr" cx="748" cy="168" r="5"/>
-        <text class="tag" x="16" y="424">● 110V power drop — one stage right, one upstage centre, one stage left</text>
-
-        <text class="aud" x="390" y="452" text-anchor="middle">A U D I E N C E</text>
-      </svg>
-    </div>
-
-    <div class="plot-cols">
-      <table class="inputs">
-        <caption>Input list — 13 channels</caption>
-        <thead>
-          <tr><th>#</th><th>Source</th><th>Provided by</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>1</td><td>Kick</td><td>House</td></tr>
-          <tr><td>2</td><td>Snare</td><td>House</td></tr>
-          <tr><td>3</td><td>Rack tom</td><td>House</td></tr>
-          <tr><td>4</td><td>Floor tom</td><td>House</td></tr>
-          <tr><td>5</td><td>Overhead L</td><td>House</td></tr>
-          <tr><td>6</td><td>Overhead R</td><td>House</td></tr>
-          <tr><td>7</td><td>Bass — DI</td><td>Band</td></tr>
-          <tr><td>8</td><td>Guitar SR (Parker) — amp mic</td><td>House</td></tr>
-          <tr><td>9</td><td>Guitar C (Nate) — amp mic</td><td>House</td></tr>
-          <tr><td>10</td><td>Keys L — DI</td><td>Band</td></tr>
-          <tr><td>11</td><td>Keys R — DI</td><td>Band</td></tr>
-          <tr><td>12</td><td>Lead vocal — Nate, centre</td><td>House</td></tr>
-          <tr><td>13</td><td>Vocal / harmonica — Parker, SR</td><td>House</td></tr>
-          <tr><td colspan="3" style="color:#6b6055">A further vocal mic can be added on request.</td></tr>
-        </tbody>
-      </table>
-
-      <div>
-        <div class="req">
-          <h3>House to provide</h3>
-          <ul>
-            <li>FOH PA sized for the room, and an engineer</li>
-            <li>Three monitor mixes on wedges</li>
-            <li>Drum and vocal microphones with stands</li>
-            <li>Two boom stands (lead vocal, stage right vocal)</li>
-            <li>Three 110V power drops — see the plot</li>
-          </ul>
-        </div>
-        <div class="req">
-          <h3>Band brings</h3>
-          <ul>
-            <li>Full backline — guitar amps, bass amp, drum kit, keyboard and stand</li>
-            <li>All instrument cabling, pedalboards and DI boxes for bass and keys</li>
-            <li>Coming Up Aces backdrop banner, where there's somewhere to hang it</li>
-          </ul>
-        </div>
-        <div class="req">
-          <h3>Logistics</h3>
-          <ul>
-            <li>Four band members</li>
-            <li>Load-in and line check: 60 minutes before doors is comfortable</li>
-            <li>Smaller rooms: happy to go with a reduced kit and fewer channels</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <p class="note">This plot covers the standard four-piece setup. We'll adapt to whatever the
-      room needs — email <a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a> and
-      we'll work to your stage and your desk. A printable copy of this page is one click away
-      with the button at the top.</p>
   </section>
 
   <!-- FOLLOW -->
