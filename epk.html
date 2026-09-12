@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coming Up Aces — Press Kit</title>
-<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band from Northwest Arkansas: bio, line-up, high-resolution press photos and booking contact.">
+<meta name="description" content="Electronic press kit for Coming Up Aces, a four-piece classic rock band: bio, line-up, high-resolution press photos and booking contact.">
 
 <!--
   Photo setup:
@@ -177,32 +177,6 @@
     line-height: 1.6;
     margin-top: 14px;
   }
-
-  /* ── AT A GLANCE ── */
-  /* Separate bordered cards rather than a 1px-gap table: the fact count doesn't
-     divide evenly into the column count at every width, and a gap grid paints
-     the leftover cells as a solid block. */
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-  }
-  .fact {
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 15px 18px;
-  }
-  .fact dt {
-    font-family: var(--display);
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .fact dd { font-size: 14px; line-height: 1.5; }
-  .fact dd a { text-decoration: none; border-bottom: 1px solid var(--border); }
 
   /* ── BIO ── */
   .bio-lede {
@@ -384,7 +358,7 @@
     .section { margin-bottom: 26px; page-break-inside: avoid; }
     .header { margin-bottom: 26px; padding-bottom: 20px; }
     .band-name { font-size: 34pt; }
-    .fact, .member, .booking-card, .shot { background: #fff; }
+    .member, .booking-card, .shot { background: #fff; }
     .photo-grid.tall { grid-template-columns: repeat(4, 1fr); }
     .shot-meta .dl { display: none; }
     a { color: var(--ink); }
@@ -397,39 +371,22 @@
   <!-- HEADER -->
   <header class="header">
     <div class="band-name">Coming Up Aces</div>
-    <div class="band-sub">Northwest Arkansas &nbsp;·&nbsp; Classic Rock</div>
+    <div class="band-sub">Classic Rock</div>
     <div class="header-rule"><span class="spade">♠</span></div>
     <div class="kit-label">Press Kit &amp; Booking Information</div>
     <div class="header-contact">
       <a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a>
       <span class="sep">|</span>
       <a href="https://comingupaces.net">comingupaces.net</a>
-      <span class="sep">|</span>
-      <span>Northwest Arkansas</span>
     </div>
     <button class="print-btn" type="button" onclick="window.print()">Print / Save as PDF</button>
   </header>
 
-  <!-- AT A GLANCE -->
-  <section class="section">
-    <div class="section-label">At a Glance</div>
-    <dl class="facts">
-      <div class="fact">
-        <dt>Line-up</dt>
-        <dd>Four piece — guitars, bass, drums, keys</dd>
-      </div>
-      <div class="fact">
-        <dt>Booking</dt>
-        <dd><a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a></dd>
-      </div>
-    </dl>
-  </section>
-
   <!-- BIO -->
   <section class="section">
     <div class="section-label">About the Band</div>
-    <p class="bio-lede">Four friends from the hills of Northwest Arkansas, playing rock
-      the way it was meant to be played — loud, honest, and live.</p>
+    <p class="bio-lede">Four friends playing rock the way it was meant to be played —
+      loud, honest, and live.</p>
     <div class="bio">
       <p>Coming Up Aces is a four-piece classic rock band forged from friendship and a
         shared love of the classics. Drawing deep from the well of Southern rock legends
@@ -441,12 +398,12 @@
         Riley Gent drives the whole thing from behind the kit. Two guitars, keys and harmonica
         over a rhythm section that leans into the pocket — it is a live band first, built to fill
         a room rather than a studio.</p>
-      <p>You'll find Coming Up Aces in bars, on festival stages and anywhere across Arkansas
-        and Oklahoma — wherever there's a room that wants a real rock band.</p>
+      <p>You'll find Coming Up Aces in bars, on festival stages and everywhere in between —
+        wherever there's a room that wants a real rock band.</p>
     </div>
     <p class="note"><strong>Short version, for listings:</strong> Coming Up Aces is a four-piece
-      classic rock band from Northwest Arkansas — Southern rock roots, heartland storytelling
-      and grunge energy, played loud and live.</p>
+      classic rock band — Southern rock roots, heartland storytelling and grunge energy, played
+      loud and live.</p>
   </section>
 
   <!-- BAND -->
@@ -566,9 +523,8 @@
     <div class="section-label">Booking</div>
     <div class="booking-card">
       <div class="booking-title">Book Coming Up Aces</div>
-      <div class="booking-sub">Bars, festivals and private events — anywhere in Arkansas,
-        Oklahoma and around. Tell us the date, the room and the set length, and we'll come back
-        to you quickly.</div>
+      <div class="booking-sub">Bars, festivals and private events, wherever you'll have us.
+        Tell us the date, the room and the set length, and we'll come back to you quickly.</div>
       <a class="booking-mail" href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a>
     </div>
   </section>
@@ -576,7 +532,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <span class="footer-spade">♠</span>
-    <div class="footer-text">Coming Up Aces &nbsp;·&nbsp; Northwest Arkansas &nbsp;·&nbsp;
+    <div class="footer-text">Coming Up Aces &nbsp;·&nbsp;
       <a href="https://comingupaces.net">comingupaces.net</a></div>
   </footer>
 

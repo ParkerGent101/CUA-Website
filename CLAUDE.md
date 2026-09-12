@@ -3,6 +3,12 @@
 ## What this project is
 Static website for Coming Up Aces, a classic rock band from NWA (Parker Gent on lead guitar/keys/harmonica, Nate Poplin on vocals/rhythm, Brandon Hargis on bass, Riley Gent on drums). Sound: Lynyrd Skynyrd + Tom Petty + grunge. Live at comingupaces.net.
 
+**The public copy names no region.** The band is from NWA, but as of 2026-09-11 neither page says
+so — titles, meta descriptions, the hero eyebrow, the bio and the booking blurb were all stripped of
+"Northwest Arkansas" and of the "Arkansas and Oklahoma" touring radius on Parker's call: the band
+isn't pitching itself as a local act. Keep the region out of `index.html` and `epk.html` copy. This
+section keeps saying NWA because it's true and it's internal.
+
 ## Tech stack
 - Pure HTML + CSS + vanilla JS (no framework, no build step, intentionally simple)
 - Shows, videos and hero photos pulled from JSON files and rendered client-side by app.js
