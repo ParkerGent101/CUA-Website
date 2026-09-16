@@ -1,8 +1,7 @@
-name: Deploy to Cloud Run
+name: Legacy Cloud Run deploy (retired)
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: deploy-cua-website
@@ -14,6 +13,9 @@ env:
 
 jobs:
   deploy:
+    # Production moved to Gram on 2026-09-16. Keep the old recipe available
+    # for disaster-recovery reference, but never recreate Cloud Run automatically.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
