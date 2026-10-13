@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coming Up Aces — Stage Plot</title>
+<meta name="description" content="Stage plot and input list for Coming Up Aces.">
+<!--
+  Standalone stage plot (not inline in epk.html — see CLAUDE.md). One 16:9 slide, prints landscape.
+  Confirmed layout: Parker SR (harmonica, keys, guitar via Kemper stereo to FOH — no amp mic),
+  Nate DSC (lead vox, rhythm gtr), Brandon SL (bass, no vocal), Riley upstage centre on an e-kit.
+  Follows the usual rider layout: plot from the audience view, numbered input list
+  (drums → bass → guitars → keys → vocals), monitor mixes, contact.
+-->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0806'/%3E%3Ctext x='16' y='25' font-size='26' text-anchor='middle' fill='%23C49A2A'%3E%E2%99%A0%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #2b2b2b; color: #1a1a1a; font-family: 'Inter', Arial, sans-serif; font-size: 13px; line-height: 1.4; }
+  .slide { max-width: 1200px; aspect-ratio: 16 / 9; margin: 24px auto; padding: 28px 36px; background: #fff;
+           display: flex; flex-direction: column; gap: 14px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #1a1a1a; padding-bottom: 8px; }
+  h1 { font-weight: 800; font-size: 26px; }
+  header .meta { color: #666; text-align: right; }
+  .print { margin-left: 12px; font: inherit; background: none; border: 1px solid #bbb; border-radius: 4px; padding: 2px 10px; cursor: pointer; }
+  .body { display: grid; grid-template-columns: 1.45fr 1fr; gap: 28px; flex: 1; min-height: 0; }
+  svg { display: block; width: 100%; height: auto; }
+  h2 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: #666; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+  th { text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: #666; font-weight: 600;
+       border-bottom: 2px solid #1a1a1a; padding: 3px 6px 3px 0; }
+  td { padding: 3px 6px 3px 0; border-bottom: 1px solid #e3e3e3; }
+  td:first-child { font-weight: 800; width: 26px; }
+  .notes { color: #444; }
+  .notes li { margin-left: 16px; }
+  footer { color: #666; border-top: 1px solid #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+  a { color: inherit; }
+  @media (max-width: 860px) {
+    body { background: #fff; } .slide { aspect-ratio: auto; margin: 0; padding: 18px 16px; }
+    .body { grid-template-columns: 1fr; } .plot { overflow-x: auto; } .plot svg { min-width: 520px; }
+    header, footer { flex-direction: column; gap: 4px; } header .meta { text-align: left; }
+  }
+  @media print {
+    @page { size: landscape; margin: 0; }
+    body { background: #fff; } .slide { margin: 0; max-width: none; } .print { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <header>
+    <h1>COMING UP ACES — STAGE PLOT</h1>
+    <div class="meta">4 piece · 11 inputs · 3 monitor wedges · 4 power drops<button class="print" onclick="window.print()">Print</button></div>
+  </header>
+
+  <div class="body">
+    <div class="plot">
+      <svg viewBox="0 0 640 430" role="img" aria-label="Stage plot from the audience view. Riley on electronic drums upstage centre; Parker stage right on harmonica, keys and guitar through a Kemper; Nate downstage centre on lead vocal and rhythm guitar; Brandon stage left on bass. Three wedges downstage, power at stage right, drums and stage left.">
+        <style>
+          .stg { fill: #fafafa; stroke: #1a1a1a; stroke-width: 2; }
+          .box { fill: #fff; stroke: #1a1a1a; stroke-width: 1.4; }
+          .riser { fill: #eee; stroke: #1a1a1a; stroke-width: 1.4; stroke-dasharray: 5 4; }
+          .gear { fill: #e8e8e8; stroke: #1a1a1a; stroke-width: 1; }
+          .mic { fill: #1a1a1a; }
+          .di { fill: #fff; stroke: #1a1a1a; stroke-width: 1.2; }
+          .nm { font: 800 15px Inter, Arial, sans-serif; fill: #1a1a1a; }
+          .t  { font: 400 11.5px Inter, Arial, sans-serif; fill: #1a1a1a; }
+          .s  { font: 400 10.5px Inter, Arial, sans-serif; fill: #666; }
+          .ch { font: 800 10px Inter, Arial, sans-serif; fill: #fff; }
+          .chb { fill: #c0392b; }
+          .edge { font: 600 10px Inter, Arial, sans-serif; letter-spacing: .14em; fill: #666; }
+          .pwr { fill: #f1c40f; stroke: #1a1a1a; stroke-width: 1; }
+        </style>
+
+        <rect class="stg" x="10" y="26" width="620" height="340"/>
+        <text class="edge" x="14" y="18">STAGE RIGHT</text>
+        <text class="edge" x="320" y="18" text-anchor="middle">UPSTAGE</text>
+        <text class="edge" x="626" y="18" text-anchor="end">STAGE LEFT</text>
+
+        <!-- Riley -->
+        <rect class="riser" x="232" y="42" width="176" height="110" rx="2"/>
+        <text class="nm" x="320" y="62" text-anchor="middle">RILEY</text>
+        <text class="t" x="320" y="78" text-anchor="middle">Drums (electronic)</text>
+        <circle class="gear" cx="290" cy="106" r="12"/><circle class="gear" cx="314" cy="96" r="9"/>
+        <circle class="gear" cx="338" cy="96" r="9"/><circle class="gear" cx="358" cy="112" r="12"/>
+        <rect class="gear" x="310" y="114" width="20" height="14"/>
+        <rect class="di" x="378" y="128" width="20" height="12"/><text class="s" x="372" y="146" text-anchor="end">module L/R → DI</text>
+        <circle class="chb" cx="270" cy="138" r="8"/><text class="ch" x="270" y="141.5" text-anchor="middle">1-2</text>
+        <circle class="mic" cx="252" cy="96" r="5"/><text class="s" x="242" y="122" text-anchor="end">Vox, boom</text>
+        <circle class="chb" cx="252" cy="82" r="8"/><text class="ch" x="252" y="85.5" text-anchor="middle">11</text>
+
+        <!-- Parker -->
+        <rect class="box" x="26" y="172" width="182" height="128" rx="2"/>
+        <text class="nm" x="36" y="192">PARKER</text>
+        <text class="t" x="36" y="207">Harmonica · Keys · Guitar</text>
+        <rect class="gear" x="36" y="218" width="76" height="24"/><text class="t" x="74" y="234" text-anchor="middle">Kemper</text>
+        <circle class="chb" cx="124" cy="230" r="8"/><text class="ch" x="124" y="233.5" text-anchor="middle">5-6</text>
+        <rect class="gear" x="36" y="250" width="106" height="16"/><text class="t" x="89" y="262" text-anchor="middle">Keys</text>
+        <circle class="chb" cx="154" cy="258" r="8"/><text class="ch" x="154" y="261.5" text-anchor="middle">7-8</text>
+        <circle class="mic" cx="44" cy="284" r="5"/><text class="t" x="54" y="288">Vox / harp mic, boom</text>
+        <circle class="chb" cx="190" cy="284" r="8"/><text class="ch" x="190" y="287.5" text-anchor="middle">10</text>
+
+        <!-- Nate -->
+        <rect class="box" x="230" y="188" width="180" height="112" rx="2"/>
+        <text class="nm" x="320" y="208" text-anchor="middle">NATE</text>
+        <text class="t" x="320" y="223" text-anchor="middle">Lead Vocal · Rhythm Guitar</text>
+        <rect class="gear" x="246" y="234" width="76" height="24"/><text class="t" x="284" y="250" text-anchor="middle">Gtr amp</text>
+        <circle class="mic" cx="334" cy="246" r="4"/>
+        <circle class="chb" cx="350" cy="246" r="8"/><text class="ch" x="350" y="249.5" text-anchor="middle">4</text>
+        <circle class="mic" cx="320" cy="282" r="5"/><text class="t" x="330" y="286">Lead vox, boom</text>
+        <circle class="chb" cx="300" cy="282" r="8"/><text class="ch" x="300" y="285.5" text-anchor="middle">9</text>
+
+        <!-- Brandon -->
+        <rect class="box" x="432" y="172" width="182" height="128" rx="2"/>
+        <text class="nm" x="604" y="192" text-anchor="end">BRANDON</text>
+        <text class="t" x="604" y="207" text-anchor="end">Bass</text>
+        <rect class="gear" x="520" y="218" width="84" height="28"/><text class="t" x="562" y="236" text-anchor="middle">Bass amp</text>
+        <circle class="mic" cx="508" cy="232" r="4"/>
+        <circle class="chb" cx="492" cy="232" r="8"/><text class="ch" x="492" y="235.5" text-anchor="middle">3</text>
+        <text class="s" x="604" y="286" text-anchor="end">No vocal</text>
+
+        <!-- wedges -->
+        <path class="gear" d="M80 324 h76 l-10 20 h-56 z"/><text class="s" x="118" y="358" text-anchor="middle">Monitor 1 — Parker</text>
+        <path class="gear" d="M282 324 h76 l-10 20 h-56 z"/><text class="s" x="320" y="358" text-anchor="middle">Monitor 2 — Nate</text>
+        <path class="gear" d="M484 324 h76 l-10 20 h-56 z"/><text class="s" x="522" y="358" text-anchor="middle">Monitor 3 — Brandon + Riley</text>
+
+        <!-- power -->
+        <rect class="pwr" x="16" y="152" width="12" height="12"/>
+        <rect class="pwr" x="414" y="44" width="12" height="12"/>
+        <rect class="pwr" x="612" y="152" width="12" height="12"/>
+        <rect class="pwr" x="392" y="192" width="12" height="12"/>
+
+        <!-- legend -->
+        <circle class="mic" cx="16" cy="386" r="4"/><text class="s" x="26" y="390">Mic</text>
+        <rect class="di" x="62" y="381" width="16" height="10"/><text class="s" x="84" y="390">DI</text>
+        <rect class="pwr" x="114" y="380" width="11" height="11"/><text class="s" x="131" y="390">110V power</text>
+        <circle class="chb" cx="208" cy="386" r="7"/><text class="s" x="220" y="390">Input #</text>
+
+        <text class="edge" x="320" y="420" text-anchor="middle" font-size="13" letter-spacing="8">AUDIENCE</text>
+      </svg>
+    </div>
+
+    <div>
+      <h2>Input List</h2>
+      <table>
+        <thead><tr><th>Ch</th><th>Source</th><th>Mic / DI</th><th>Stand</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Drums L (e-kit)</td><td>DI</td><td>—</td></tr>
+          <tr><td>2</td><td>Drums R (e-kit)</td><td>DI</td><td>—</td></tr>
+          <tr><td>3</td><td>Bass amp</td><td>Mic</td><td>Short</td></tr>
+          <tr><td>4</td><td>Gtr amp — Nate</td><td>SM57</td><td>Short</td></tr>
+          <tr><td>5</td><td>Gtr L — Parker (Kemper)</td><td>XLR line</td><td>—</td></tr>
+          <tr><td>6</td><td>Gtr R — Parker (Kemper)</td><td>XLR line</td><td>—</td></tr>
+          <tr><td>7</td><td>Keys L</td><td>DI</td><td>—</td></tr>
+          <tr><td>8</td><td>Keys R</td><td>DI</td><td>—</td></tr>
+          <tr><td>9</td><td>Lead vox — Nate</td><td>SM58</td><td>Tall boom</td></tr>
+          <tr><td>10</td><td>Vox / harp — Parker</td><td>SM58</td><td>Tall boom</td></tr>
+          <tr><td>11</td><td>Vox — Riley (drums)</td><td>SM58</td><td>Short boom</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Monitor Wedges (floor speakers facing the band)</h2>
+      <table>
+        <thead><tr><th>#</th><th>Who</th><th>Position</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Parker</td><td>DSR wedge</td></tr>
+          <tr><td>2</td><td>Nate</td><td>DSC wedge</td></tr>
+          <tr><td>3</td><td>Brandon + Riley</td><td>DSL wedge</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Notes</h2>
+      <ul class="notes">
+        <li>Band supplies all backline, DIs and instrument cables.</li>
+        <li>Electronic kit — low stage volume, no drum mics needed.</li>
+        <li>110V power: stage right, drum riser, Nate (center), stage left.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <span>Contact: <a href="mailto:comingupaces1@gmail.com">comingupaces1@gmail.com</a></span>
+    <span>comingupaces.net</span>
+  </footer>
+</div>
+</body>
+</html>
